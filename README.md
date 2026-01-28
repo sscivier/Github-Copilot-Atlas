@@ -4,6 +4,8 @@ A multi-agent orchestration system for VS Code Copilot that enables complex soft
 
 > Built upon the foundation of [copilot-orchestra](https://github.com/ShepAlderson/copilot-orchestra) by ShepAlderson, with agent naming conventions inspired by [oh-my-opencode](https://github.com/code-yeongyu/oh-my-opencode).
 
+> **Note:** Best supported on VS Code Insiders (as of January 2026) for access to the latest agent orchestration features.
+
 ## Overview
 
 This repository contains custom agent prompts that work together to handle the complete software development lifecycle: **Planning → Implementation → Review → Commit**. The system uses a conductor-delegate pattern where a main orchestrator (Atlas) coordinates specialized subagents to efficiently tackle complex development tasks.
@@ -12,7 +14,7 @@ This repository contains custom agent prompts that work together to handle the c
 
 ### Primary Agents
 
-- **Atlas** (`Atlas.agent.md`) - The CONDUCTOR
+- **Atlas** (`Atlas.agent.md`) - The ORCHESTRATOR
   - **Model:** Claude Sonnet 4.5 (copilot)
   - Orchestrates the full development lifecycle
   - Delegates to specialized subagents for research, implementation, and review
@@ -104,9 +106,9 @@ This repository contains custom agent prompts that work together to handle the c
    ```
 
 2. **Copy agent files to VS Code User prompts directory:**
-   - **Windows:** `%APPDATA%\Code - Insiders\User\prompts\`
-   - **macOS:** `~/Library/Application Support/Code - Insiders/User/prompts/`
-   - **Linux:** `~/.config/Code - Insiders/User/prompts/`
+   - **Windows:** `%APPDATA%\Code\User\prompts\` (or `%APPDATA%\Code - Insiders\User\prompts\` if using Insiders)
+   - **macOS:** `~/Library/Application Support/Code/User/prompts/` (or `~/Library/Application Support/Code - Insiders/User/prompts/` if using Insiders)
+   - **Linux:** `~/.config/Code/User/prompts/` (or `~/.config/Code - Insiders/User/prompts/` if using Insiders)
 
 3. **Reload VS Code** to recognize the new agents
 
@@ -115,7 +117,7 @@ This repository contains custom agent prompts that work together to handle the c
 ### Planning a Feature with Prometheus
 
 ```
-@Prometheus Plan a comprehensive implementation for adding user authentication to the app
+Plan a comprehensive implementation for adding user authentication to the app
 ```
 
 Prometheus will:
@@ -126,7 +128,7 @@ Prometheus will:
 ### Executing a Plan with Atlas
 
 ```
-@Atlas Implement the plan in .sisyphus/plans/user-authentication-plan.md
+Implement the plan that was devised by Promethus in the previous prompt 
 ```
 
 Atlas will:
@@ -139,7 +141,7 @@ Atlas will:
 ### Direct Research with Oracle
 
 ```
-@Oracle-subagent Research how the networking system works in this mod
+Let @Oracle research how the database layer is structured
 ```
 
 Oracle will:
@@ -150,7 +152,7 @@ Oracle will:
 ### Quick Exploration with Explorer
 
 ```
-@Explorer-subagent Find all files related to GuiScriptInterface
+Let @Explorer find all files related to authentication
 ```
 
 Explorer will:
@@ -161,27 +163,27 @@ Explorer will:
 ## Workflow Example
 
 ```
-User: @Prometheus Plan adding autocomplete feature to script editor
+User: Prometheus, plan adding a user dashboard feature
 
 Prometheus:
-  ├─ @Explorer-subagent (find script editor files)
-  ├─ @Oracle-subagent (research syntax highlighter)
-  ├─ @Oracle-subagent (research autocomplete providers)
+  ├─ @Explorer (find UI components)
+  ├─ @Oracle (research data fetching patterns)
+  ├─ @Oracle (research state management)
   └─ Writes plan → Offers to invoke Atlas
 
 User: Yes, invoke Atlas
 
 Prometheus:
-  └─ @Atlas Implement the plan...
+  └─ Atlas, implement the plan...
 
 Atlas: Phase 1/4 - Test Infrastructure
-  └─ @Sisyphus-subagent Implement Phase 1
+  └─ @Sisyphus Implement Phase 1
       ├─ Writes tests (fail)
       ├─ Writes minimal code
       └─ Tests pass ✓
 
 Atlas: Reviewing Phase 1
-  └─ @code-review-subagent Review Phase 1
+  └─ @code-review Review Phase 1
       └─ Status: APPROVED ✓
 
 Atlas: Phase 1 complete! [commit message provided]
@@ -204,21 +206,27 @@ All agents declare their required tools in YAML frontmatter:
 - etc.
 
 ### Handoff Declarations
-Agents declare available delegations:
+Prometheus declares its handoff to Atlas:
 ```yaml
 handoff:
-  - agent: Oracle-subagent
-    description: Delegate research
-  - agent: Sisyphus-subagent
-    description: Delegate implementation
+  - label: Start implementation with Atlas
+    agent: Atlas
+    prompt: Implement the plan
 ```
 
 ## Requirements
 
-- VS Code Insiders (with GitHub Copilot)
-- GitHub Copilot subscription
-- VS Code Custom Agents feature enabled
-- Multi-agent orchestration support
+- **VS Code Insiders** (recommended for latest agent features and bug fixes)
+- **GitHub Copilot** subscription with multi-agent support
+- **VS Code Settings:**
+  ```json
+  {
+    "chat.customAgentInSubagent.enabled": true,
+    "github.copilot.chat.responsesApiReasoningEffort": "high"
+  }
+  ```
+  - `customAgentInSubagent.enabled`: Allow subagents to use custom agents defined in a '-agents.md' file like the ones above 
+  - `responsesApiReasoningEffort`: Set to "high" for enhanced reasoning in planning agents (GPT models)
 
 ## Best Practices
 
@@ -240,19 +248,33 @@ Contributions are welcome! Please:
 
 ## License
 
-MIT License - See LICENSE file for details
+MIT License
+
+Copyright (c) 2026 Copilot Atlas Contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
 ## Acknowledgments
 
 This project builds upon the excellent work of:
 - **[copilot-orchestra](https://github.com/ShepAlderson/copilot-orchestra)** by [ShepAlderson](https://github.com/ShepAlderson) - Foundation and concept for multi-agent orchestration
 - **[oh-my-opencode](https://github.com/code-yeongyu/oh-my-opencode)** by [code-yeongyu](https://github.com/code-yeongyu) - Inspiration for agent naming conventions and templates
-
-Built for complex software development tasks that benefit from:
-- Structured planning and execution
-- Parallel research and implementation
-- Domain-specific agent expertise
-- Context-aware delegation strategies
 
 ---
 
