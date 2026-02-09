@@ -43,21 +43,21 @@ This repository contains custom agent prompts that work together to handle the c
   - Handles linting and formatting
   - Can be invoked in parallel for disjoint features
 
-- **Explorer-subagent** (`Explorer-subagent.agent.md`) - THE SCOUT
+- **Argus-subagent** (`Argus-subagent.agent.md`) - THE SCOUT
   - **Model:** Gemini 3 Flash (Preview) (copilot)
   - Rapid file/usage discovery across codebases
   - Read-only exploration (no edits/commands)
   - Returns structured results with file lists and analysis
   - MANDATORY parallel search strategy (3-10 simultaneous searches)
 
-- **Code-Review-subagent** (`Code-Review-subagent.agent.md`) - THE REVIEWER
+- **Themis-subagent** (`Themis-subagent.agent.md`) - THE REVIEWER
   - **Model:** GPT-5.2 (copilot)
   - Reviews code for correctness, quality, and test coverage
   - Returns structured feedback (APPROVED/NEEDS_REVISION/FAILED)
   - Can be invoked in parallel for independent phases
   - Focus on blocking issues vs nice-to-haves
 
-- **Frontend-Engineer-subagent** (`Frontend-Engineer-subagent.agent.md`) - THE UI/UX SPECIALIST
+- **Hephaestus-subagent** (`Hephaestus-subagent.agent.md`) - THE UI/UX SPECIALIST
   - **Model:** Gemini 3 Pro (Preview) (copilot)
   - Implements user interfaces, styling, and responsive layouts
   - Expert in modern frontend frameworks and tooling
@@ -72,9 +72,9 @@ This repository contains custom agent prompts that work together to handle the c
 
 **How Copilot Atlas Solves It:** By delegating tasks to specialized subagents, we radically improve context efficiency:
 
-- **Researcher agents** (Oracle, Explorer) read and analyze large codebases, returning only high-signal summaries—not the raw 50,000 lines of code
-- **Implementer agents** (Sisyphus) focus solely on the files they're modifying, not rereading the entire project architecture
-- **Reviewer agents** (Code-Review) examine only changed files, not context from the research phase
+- **Researcher agents** (Oracle, Argus) read and analyze large codebases, returning only high-signal summaries—not the raw 50,000 lines of code
+- **Implementer agents** (Sisyphus, Hephaestus) focus solely on the files they're modifying, not rereading the entire project architecture
+- **Reviewer agents** (Themis) examine only changed files, not context from the research phase
 - **The Conductor** (Atlas) orchestrates everything without ever touching the bulk of your codebase
 
 **The Result:** What would take 80-90% of a monolithic agent's context now takes 10-15%, leaving 70-80% more tokens for deeper analysis, better reasoning, and faster iterations.
@@ -84,7 +84,7 @@ This repository contains custom agent prompts that work together to handle the c
 ### 🔄 Parallel Agent Execution
 
 - Launch multiple subagents simultaneously for independent tasks
-- Explorer: 3-10 parallel searches in first batch
+- Argus: 3-10 parallel searches in first batch
 - Oracle: Parallel research across multiple subsystems
 - Sisyphus: Parallel implementation for disjoint features
 - Maximum 10 parallel agents per phase
@@ -135,7 +135,7 @@ Plan a comprehensive implementation for adding user authentication to the app
 
 Prometheus will:
 
-1. Research the codebase (delegating to Explorer/Oracle as needed)
+1. Research the codebase (delegating to Argus/Oracle as needed)
 2. Write a detailed TDD plan with 3-10 phases
 3. Offer to invoke Atlas automatically or let you review first
 
@@ -151,7 +151,7 @@ Atlas will:
 
 1. Review the plan
 2. Delegate Phase 1 implementation to Sisyphus
-3. Delegate review to Code-Review
+3. Delegate review to Themis
 4. Present results and wait for commit approval
 5. Continue through all phases
 
@@ -163,17 +163,17 @@ Let @Oracle research how the database layer is structured
 
 Oracle will:
 
-1. Delegate to Explorer for file discovery (if >10 files)
+1. Delegate to Argus for file discovery (if >10 files)
 2. Analyze key files and patterns
 3. Return structured findings
 
-### Quick Exploration with Explorer
+### Quick Exploration with Argus
 
 ```text
-Let @Explorer find all files related to authentication
+Let @Argus find all files related to authentication
 ```
 
-Explorer will:
+Argus will:
 
 1. Launch 3-10 parallel searches immediately
 2. Read necessary files to confirm relationships
@@ -185,7 +185,7 @@ Explorer will:
 User: Prometheus, plan adding a user dashboard feature
 
 Prometheus:
-  ├─ @Explorer (find UI components)
+  ├─ @Argus (find UI components)
   ├─ @Oracle (research data fetching patterns)
   ├─ @Oracle (research state management)
   └─ Writes plan → Offers to invoke Atlas
@@ -202,7 +202,7 @@ Atlas: Phase 1/4 - Test Infrastructure
       └─ Tests pass ✓
 
 Atlas: Reviewing Phase 1
-  └─ @Code-Review Review Phase 1
+  └─ @Themis Review Phase 1
       └─ Status: APPROVED ✓
 
 Atlas: Phase 1 complete! [commit message provided]
