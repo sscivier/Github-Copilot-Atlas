@@ -3,7 +3,6 @@
 A multi-agent orchestration system for VS Code Copilot that enables complex software development workflows through intelligent agent delegation and parallel execution.
 
 > Built upon the foundation of [copilot-orchestra](https://github.com/ShepAlderson/copilot-orchestra) by ShepAlderson, with agent naming conventions inspired by [oh-my-opencode](https://github.com/code-yeongyu/oh-my-opencode).
-
 > **Note:** Best supported on VS Code Insiders (as of January 2026) for access to the latest agent orchestration features.
 
 ## Overview
@@ -83,6 +82,7 @@ This repository contains custom agent prompts that work together to handle the c
 ---
 
 ### 🔄 Parallel Agent Execution
+
 - Launch multiple subagents simultaneously for independent tasks
 - Explorer: 3-10 parallel searches in first batch
 - Oracle: Parallel research across multiple subsystems
@@ -90,18 +90,21 @@ This repository contains custom agent prompts that work together to handle the c
 - Maximum 10 parallel agents per phase
 
 ### 🧪 Test-Driven Development
+
 - Every phase follows red-green-refactor cycle
 - Tests written first, run to fail, then minimal code
 - Explicit test → code → test steps in all plans
 - No manual testing unless explicitly requested
 
 ### 🤝 Proper Agent Handoffs
+
 - VS Code Custom Agent handoff configuration
 - Prometheus → Atlas automatic handoff option
 - Each agent can declare available delegations
 - Clear handoff workflow with user approval gates
 
 ### 📋 Structured Planning
+
 - Atlas-compatible plan format
 - 3-10 incremental, self-contained phases
 - Open questions with options/recommendations
@@ -110,6 +113,7 @@ This repository contains custom agent prompts that work together to handle the c
 ## Installation
 
 1. **Clone or download this repository:**
+
    ```bash
    git clone https://github.com/bigguy345/Github-Copilot-Atlas.git
    ```
@@ -125,25 +129,26 @@ This repository contains custom agent prompts that work together to handle the c
 
 ### Planning a Feature with Prometheus
 
-```
+```text
 Plan a comprehensive implementation for adding user authentication to the app
 ```
 
 Prometheus will:
+
 1. Research the codebase (delegating to Explorer/Oracle as needed)
 2. Write a detailed TDD plan with 3-10 phases
 3. Offer to invoke Atlas automatically or let you review first
 
 ### Executing a Plan with Atlas
 
-```
+```text
 Implement the plan devised by Promethus
 ```
 
 OR: Accept the hand-off from Prometheus by clicking `Start implementation with Atlas`
 
-
 Atlas will:
+
 1. Review the plan
 2. Delegate Phase 1 implementation to Sisyphus
 3. Delegate review to Code-Review
@@ -152,29 +157,31 @@ Atlas will:
 
 ### Direct Research with Oracle
 
-```
+```text
 Let @Oracle research how the database layer is structured
 ```
 
 Oracle will:
+
 1. Delegate to Explorer for file discovery (if >10 files)
 2. Analyze key files and patterns
 3. Return structured findings
 
 ### Quick Exploration with Explorer
 
-```
+```text
 Let @Explorer find all files related to authentication
 ```
 
 Explorer will:
+
 1. Launch 3-10 parallel searches immediately
 2. Read necessary files to confirm relationships
 3. Return structured results with file list and analysis
 
 ## Workflow Example
 
-```
+```text
 User: Prometheus, plan adding a user dashboard feature
 
 Prometheus:
@@ -204,13 +211,17 @@ Atlas: Phase 1 complete! [commit message provided]
 ## Configuration
 
 ### Plan Directory
+
 Agents check for plan directory configuration:
+
 1. Look for `AGENTS.md` file in workspace
 2. Find plan directory specification (e.g., `.sisyphus/plans`)
 3. Default to `plans/` if not specified
 
 ### Tool Requirements
+
 All agents declare their required tools in YAML frontmatter:
+
 - `agent` - For delegating to other agents
 - `edit` - File editing capabilities
 - `search` - Semantic/grep search
@@ -218,7 +229,9 @@ All agents declare their required tools in YAML frontmatter:
 - etc.
 
 ### Handoff Declarations
+
 Prometheus declares its handoff to Atlas:
+
 ```yaml
 handoff:
   - label: Start implementation with Atlas
@@ -234,11 +247,12 @@ You can extend the Atlas and Promethus agents with your own specialized agents f
 
 The fastest way to add a custom agent is to simply ask:
 
-```
+```text
 @Atlas Create a new subagent called Database-Expert that specializes in SQL optimization, schema design, and query analysis. Integrate it with Prometheus and Atlas so they can delegate database-related tasks to it.
 ```
 
 Atlas will:
+
 1. Create the agent file with proper YAML frontmatter
 2. Add it to Prometheus's research delegation list
 3. Add it to Atlas's implementation delegation list
@@ -284,6 +298,7 @@ Edit `Prometheus.agent.md` and add your agent to the research delegation section
 ```
 
 Also add to Prometheus's constraints if it shouldn't delegate to your agent:
+
 ```markdown
 - You CAN delegate to YourAgent-subagent for [domain] research
 ```
@@ -293,11 +308,13 @@ Also add to Prometheus's constraints if it shouldn't delegate to your agent:
 Edit `Atlas.agent.md`:
 
 a. Add to the subagent list at the top:
+
 ```markdown
 6. YourAgent-subagent: THE [ROLE]. Expert in [domain expertise]
 ```
 
 b. Add to the subagent instructions section:
+
 ```markdown
 **YourAgent-subagent**:
 - Use #runSubagent to invoke for [task type] tasks
@@ -309,12 +326,14 @@ b. Add to the subagent instructions section:
 **4. Test Your Integration**
 
 Try invoking your agent:
-```
+
+```text
 Let @YourAgent analyze the current database schema
 ```
 
 Or through Atlas:
-```
+
+```text
 @Atlas Use YourAgent to optimize our SQL queries in the user service
 ```
 
@@ -344,13 +363,15 @@ Add an entry to the README's Specialized Subagents section describing when to us
 - **VS Code Insiders** (recommended for latest agent features and bug fixes)
 - **GitHub Copilot** subscription with multi-agent support
 - **VS Code Settings:**
+
   ```json
   {
     "chat.customAgentInSubagent.enabled": true,
     "github.copilot.chat.responsesApiReasoningEffort": "high"
   }
   ```
-  - `customAgentInSubagent.enabled`: Allow subagents to use custom agents defined in a '-agents.md' file like the ones above 
+
+  - `customAgentInSubagent.enabled`: Allow subagents to use custom agents defined in a '-agents.md' file like the ones above
   - `responsesApiReasoningEffort`: Set to "high" for enhanced reasoning in planning agents (GPT models)
 
 ## Best Practices
@@ -362,7 +383,6 @@ Add an entry to the README's Specialized Subagents section describing when to us
 5. **Commit frequently** - After each approved phase after properly testing and ensuring phase functionality
 6. **Delegate appropriately** - Let subagents handle heavy lifting
 
-
 ## Adding Custom Agents
 
 You can extend the Atlas and Promethus agents with your own specialized subagents for domain-specific tasks (e.g., database experts, API specialists, security reviewers, etc.).
@@ -371,11 +391,12 @@ You can extend the Atlas and Promethus agents with your own specialized subagent
 
 The fastest way to add a custom agent is to simply ask Atlas:
 
-```
+```text
 @Atlas Create a new subagent called Database-Expert that specializes in SQL optimization, schema design, and query analysis. Integrate it with Prometheus and Atlas so they can delegate database-related tasks to it.
 ```
 
 Atlas will:
+
 1. Create the agent file with proper YAML frontmatter
 2. Add it to Prometheus's research delegation list
 3. Add it to Atlas's implementation delegation list
@@ -413,7 +434,7 @@ You are a [ROLE] SUBAGENT called by a parent CONDUCTOR agent.
 
 Edit `Prometheus.agent.md` and add your agent to the research delegation section:
 
-```markdown
+```text
 **YourAgent-subagent**:
 - Provide a clear research goal related to [domain]
 - Instruct to analyze [specific aspects]
@@ -421,6 +442,7 @@ Edit `Prometheus.agent.md` and add your agent to the research delegation section
 ```
 
 Also add to Prometheus's constraints if it shouldn't delegate to your agent:
+
 ```markdown
 - You CAN delegate to YourAgent-subagent for [domain] research
 ```
@@ -430,11 +452,13 @@ Also add to Prometheus's constraints if it shouldn't delegate to your agent:
 Edit `Atlas.agent.md`:
 
 a. Add to the subagent list at the top:
+
 ```markdown
 6. YourAgent-subagent: THE [ROLE]. Expert in [domain expertise]
 ```
 
 b. Add to the subagent instructions section:
+
 ```markdown
 **YourAgent-subagent**:
 - Use #runSubagent to invoke for [task type] tasks
@@ -445,8 +469,9 @@ b. Add to the subagent instructions section:
 
 **4. Test Your Integration**
 
-Try invoking your agent through Atlas 
-```
+Try invoking your agent through Atlas
+
+```text
 Let @YourAgent analyze the current database schema and optimize our SQL queries in the user service
 ```
 
@@ -498,6 +523,7 @@ SOFTWARE.
 ## Acknowledgments
 
 This project builds upon the excellent work of:
+
 - **[copilot-orchestra](https://github.com/ShepAlderson/copilot-orchestra)** by [ShepAlderson](https://github.com/ShepAlderson) - Foundation and concept for multi-agent orchestration
 - **[oh-my-opencode](https://github.com/code-yeongyu/oh-my-opencode)** by [code-yeongyu](https://github.com/code-yeongyu) - Inspiration for agent naming conventions and templates
 
