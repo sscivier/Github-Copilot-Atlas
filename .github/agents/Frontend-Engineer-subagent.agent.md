@@ -1,1 +1,0 @@
-/Users/sscivier/Developer/phd/tools/agents/Github-Copilot-Atlas/base-agents/Frontend-Engineer-subagent.agent.md

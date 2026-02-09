@@ -1,0 +1,1 @@
+/Users/sscivier/Developer/phd/tools/agents/Github-Copilot-Atlas/base-agents/Hephaestus-subagent.agent.md
