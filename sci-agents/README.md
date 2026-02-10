@@ -82,7 +82,7 @@ I need to implement a new Gaussian process kernel with spatially-varying lengths
 
 ### Sci-Plan (Planning Agent)
 
-**Model**: GPT-5.2
+**Model**: Claude Opus 4.6
 
 **Role**: Creates comprehensive implementation plans with options and tradeoffs
 
@@ -178,7 +178,7 @@ Explanation of what was found
 
 ### Sci-Review (Review Agent)
 
-**Model**: GPT-5.2
+**Model**: Claude Opus 4.6
 
 **Role**: Validates scientific correctness and code quality
 
