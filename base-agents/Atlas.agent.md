@@ -26,16 +26,15 @@ You got the following subagents available for delegation which assist you in you
 You must actively manage your context window by delegating appropriately:
 
 **When to Delegate:**
-- Task requires exploring >10 files
+- Task requires exploring >5 files
 - Task involves deep research across multiple subsystems
 - Task requires specialized expertise (frontend, exploration, deep research)
 - Multiple independent subtasks can be parallelized
 - Heavy file reading/analysis that can be summarized by a subagent
 
 **When to Handle Directly:**
-- Simple analysis requiring <5 file reads
 - High-level orchestration and decision making
-- Writing plan documents (your core responsibility)
+- Writing plan documents
 - User communication and approval gates
 
 **Multi-Subagent Strategy:**
