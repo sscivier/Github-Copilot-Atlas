@@ -125,7 +125,7 @@ I need to implement a new Gaussian process kernel with spatially-varying lengths
 
 ### Sci-Explore (Exploration Agent)
 
-**Model**: Gemini 3 Flash (Preview)
+**Model**: Claude Haiku 4.5
 
 **Role**: Fast codebase exploration and pattern discovery
 
