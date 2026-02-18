@@ -59,7 +59,7 @@ Format: `plans/<task>/phase-<N>-preserve.md`
 
 ### Sci-Conductor (Orchestrator)
 
-**Model**: Claude Sonnet 4.5
+**Model**: Claude Sonnet 4.6
 
 **Role**: Manages the full development lifecycle, coordinates all subagents
 
@@ -156,7 +156,7 @@ Explanation of what was found
 
 ### Sci-Implement (Implementation Agent)
 
-**Model**: Claude Sonnet 4.5
+**Model**: Claude Sonnet 4.6
 
 **Role**: Implements scientific Python code with strict TDD
 
@@ -195,7 +195,7 @@ Explanation of what was found
 
 ### Sci-Notebook (Notebook Agent)
 
-**Model**: Claude Sonnet 4.5
+**Model**: Claude Sonnet 4.6
 
 **Role**: Creates Jupyter notebooks for exploration and documentation
 
@@ -224,7 +224,7 @@ Create a tutorial notebook demonstrating how to use our custom Gibbs kernel with
 
 ### Sci-Viz (Visualization Agent)
 
-**Model**: Claude Sonnet 4.5, Gemini 3 Pro
+**Model**: Claude Sonnet 4.6, Gemini 3 Pro
 
 **Role**: Creates scientific visualizations
 

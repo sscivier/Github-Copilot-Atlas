@@ -60,7 +60,7 @@ Format: `plans/<task>/phase-<N>-preserve.md`
 
 ### Web-Conductor (Orchestrator)
 
-**Model**: Claude Sonnet 4.5
+**Model**: Claude Sonnet 4.6
 
 **Role**: Manages the full development lifecycle, coordinates all subagents
 
@@ -157,7 +157,7 @@ Explanation of what was found
 
 ### Web-Implement (Implementation Agent)
 
-**Model**: Claude Sonnet 4.5
+**Model**: Claude Sonnet 4.6
 
 **Role**: Implements frontend code with TDD and responsive design
 
@@ -196,7 +196,7 @@ Explanation of what was found
 
 ### Web-Content (Content Agent)
 
-**Model**: Claude Sonnet 4.5
+**Model**: Claude Sonnet 4.6
 
 **Role**: Manages academic content and structured data
 
@@ -218,7 +218,7 @@ Explanation of what was found
 
 ### Web-Style (Styling Agent)
 
-**Model**: Claude Sonnet 4.5
+**Model**: Claude Sonnet 4.6
 
 **Role**: Implements styling and design systems
 

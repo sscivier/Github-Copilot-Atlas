@@ -14,7 +14,7 @@ This repository contains custom agent prompts that work together to handle the c
 ### Primary Agents
 
 - **Atlas** (`Atlas.agent.md`) - The ORCHESTRATOR
-  - **Model:** Claude Sonnet 4.5 (copilot)
+  - **Model:** Claude Sonnet 4.6 (copilot)
   - Orchestrates the full development lifecycle
   - Delegates to specialized subagents for research, implementation, and review
   - Manages context conservation and parallel execution
@@ -37,7 +37,7 @@ This repository contains custom agent prompts that work together to handle the c
   - Supports parallel research across independent subsystems
 
 - **Sisyphus-subagent** (`Sisyphus-subagent.agent.md`) - THE IMPLEMENTER
-  - **Model:** Claude Sonnet 4.5 (copilot)
+  - **Model:** Claude Sonnet 4.6 (copilot)
   - Executes implementation following strict TDD principles
   - Writes tests first, then minimal code to pass
   - Handles linting and formatting
@@ -269,7 +269,7 @@ Create a new file in your prompts directory: `YourAgent-subagent.agent.md`
 description: 'Brief description of what this agent does'
 argument-hint: What kind of task to delegate (e.g., "Analyze database schema")
 tools: ['search', 'usages', 'edit', 'runCommands', ...]  # Tools your agent needs
-model: Claude Sonnet 4.5 (copilot)  # Or GPT-5.2, Gemini, etc.
+model: Claude Sonnet 4.6 (copilot)  # Or GPT-5.2, Gemini, etc.
 ---
 
 You are a [ROLE] SUBAGENT called by a parent CONDUCTOR agent.
@@ -413,7 +413,7 @@ Create a new file in your prompts directory: `YourAgent-subagent.agent.md`
 description: 'Brief description of what this agent does'
 argument-hint: What kind of task to delegate (e.g., "Analyze database schema")
 tools: ['search', 'usages', 'edit', 'runCommands', ...]  # Tools your agent needs
-model: Claude Sonnet 4.5 (copilot)  # Or GPT-5.2, Gemini, etc.
+model: Claude Sonnet 4.6 (copilot)  # Or GPT-5.2, Gemini, etc.
 ---
 
 You are a [ROLE] SUBAGENT called by a parent CONDUCTOR agent.
