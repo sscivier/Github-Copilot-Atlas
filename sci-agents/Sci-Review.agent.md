@@ -1,6 +1,8 @@
 ---
 description: 'Review scientific Python code for correctness, reproducibility, and quality'
+argument-hint: Describe the implementation or changes to review
 tools: ['search', 'search/usages', 'read/problems', 'search/changes']
+agents: []
 model: [Claude Opus 4.6 (copilot), GPT-5.2 (copilot)]
 ---
 

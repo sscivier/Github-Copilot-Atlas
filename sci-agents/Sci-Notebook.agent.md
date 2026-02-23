@@ -1,5 +1,6 @@
 ---
 description: 'Jupyter notebook specialist for exploratory analysis, visualization, and scientific documentation'
+argument-hint: Describe the notebook to create or the analysis to document
 tools: ['edit', 'edit/editNotebook', 'execute/runNotebookCell', 'search', 'execute/getTerminalOutput', 'execute/runInTerminal', 'read/terminalLastCommand', 'read/terminalSelection', 'execute/createAndRunTask', 'search/usages', 'read/problems', 'search/changes', 'execute/testFailure', 'web/fetch', 'web/githubRepo', 'todo', 'agent']
 model: Claude Sonnet 4.6 (copilot)
 ---

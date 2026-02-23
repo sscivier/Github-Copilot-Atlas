@@ -1,5 +1,6 @@
 ---
 description: 'Implement scientific Python code with strict TDD, numerical stability, and reproducibility'
+argument-hint: Describe the feature, function, or module to implement
 tools: ['edit', 'search', 'execute/getTerminalOutput', 'execute/runInTerminal', 'read/terminalLastCommand', 'read/terminalSelection', 'execute/createAndRunTask', 'search/usages', 'read/problems', 'search/changes', 'execute/testFailure', 'web/fetch', 'web/githubRepo', 'todo', 'agent']
 model: [Claude Sonnet 4.6 (copilot), GPT-5.2-Codex (copilot)]
 ---
