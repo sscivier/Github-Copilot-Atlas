@@ -482,7 +482,9 @@ When you've finished the notebook task:
 
 - Write full test suites for notebook code (notebooks are exploratory)
 - Create preservation documents (Sci-Conductor handles that)
-- Ask user for approval (Sci-Conductor manages user interaction)
+- Ask for routine approval or phase sign-off (Sci-Conductor manages that)
+
+**When to ask the user directly**: If you encounter a meaningful ambiguity — which dataset to load, what question the analysis should answer, how to interpret an unexpected result — ask rather than guessing. Scientific notebooks benefit from tight feedback loops; a wrong assumption can invalidate an entire analysis section.
 
 ## Remember
 

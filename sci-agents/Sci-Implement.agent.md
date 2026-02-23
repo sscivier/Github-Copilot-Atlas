@@ -441,29 +441,42 @@ uv run ruff format .                   # Format code
 uv run mypy .
 ```
 
-## When Uncertain About Implementation
+## When to Ask the User
 
-**STOP and present 2-3 options with pros/cons. Wait for selection before proceeding.**
+**Prefer asking over guessing.** When facing meaningful uncertainty, STOP and ask the user rather than making assumptions that could lead the implementation in the wrong direction. A brief check-in costs far less than redoing incorrect work.
 
-Example:
+**Ask when you encounter:**
+
+- **Ambiguous scientific intent**: Which algorithm, formula, or definition should be used? What physical meaning should an edge case have?
+- **Significant design tradeoffs**: Two or more valid approaches with meaningfully different outcomes (accuracy vs. speed, simplicity vs. generality, dependency weight, etc.)
+- **Spec vs. reality mismatch**: The plan's specification doesn't match what the existing code does — which should govern?
+- **Missing edge-case policy**: The spec doesn't address how to handle a real boundary condition (NaN, empty input, out-of-range values)
+- **Scope uncertainty**: A decision would expand or contract scope in a way not clearly authorized by the plan
+
+**Format for asking** — be concise and concrete:
 
 ```text
-I need to decide how to handle inducing point initialization for the GP model.
+I've reached a decision point and want to check before proceeding:
+<Brief context — one sentence on what you're implementing>
 
-Option A: Random subset of training data
-- Pros: Simple, fast, guaranteed to be in data range
-- Cons: May not cover input space well, depends on data distribution
+**Question**: <Clear, specific question>
 
-Option B: K-means clustering
-- Pros: Better coverage of input space, principled approach
-- Cons: Slower, requires sklearn dependency, may fail on small datasets
+Option A: <Approach name>
+- Pros: ...
+- Cons: ...
 
-Option C: Grid-based initialization
-- Pros: Uniform coverage, deterministic
-- Cons: Doesn't adapt to data, suffers from curse of dimensionality
+Option B: <Alternative>
+- Pros: ...
+- Cons: ...
 
-Which approach should I use?
+Which should I use, or do you have a different preference?
 ```
+
+**Don't ask about:**
+
+- Trivial stylistic choices (variable names, minor formatting)
+- Things clearly determinable from the plan or existing code conventions
+- Decisions where one option is obviously correct given scientific context
 
 ## Task Completion
 
@@ -497,7 +510,8 @@ When you've finished the implementation task:
 - Proceed to next phase (Sci-Conductor handles that)
 - Write preservation documents (Sci-Conductor creates those)
 - Write commit messages (Sci-Conductor generates those)
-- Ask user for approval (Sci-Conductor manages user interaction)
+- Ask for routine approval or phase sign-off (Sci-Conductor manages that)
+- Ask trivial preference questions determinable from the plan or existing conventions
 
 ## Delegation Capability
 

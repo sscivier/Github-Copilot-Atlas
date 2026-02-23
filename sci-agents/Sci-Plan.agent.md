@@ -72,7 +72,7 @@ Use #runSubagent invoke to delegate research tasks.
 - Parse scientific requirements carefully
 - Identify scope, constraints, and success criteria
 - Identify scientific domain (numerical methods, data analysis, modeling)
-- Note any ambiguities to address in options/recommendations
+- Note any ambiguities — these **must** surface as Open Questions in the plan, not be silently resolved with assumptions
 
 #### 1B. Explore the Codebase (Delegate Heavy Lifting with Parallel Execution)
 
@@ -298,12 +298,14 @@ For any major design decisions, present options:
 - [ ] Precision/stability analyzed
 - [ ] Performance acceptable (complexity, memory)
 
-### Open Questions (0-5 questions)
+### Open Questions
+
+Surface **all genuine ambiguities** here — do not silently resolve them with assumptions. If research didn't definitively answer a question, it belongs in this section. Sci-Conductor will present these to the user at Gate 1 and require answers before implementation begins.
 
 1. <Clarifying question> Option A / Option B / Option C
 2. <Another question needing user input>
 
-<If no open questions, omit this section>
+<If truly no open questions remain after thorough research, omit this section.>
 ```
 
 ## Important Guidelines

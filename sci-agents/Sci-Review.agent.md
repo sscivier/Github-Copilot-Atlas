@@ -479,7 +479,9 @@ When reviewing plotting code, check:
 - Implement fixes (report issues, don't fix them)
 - Write preservation documents (Sci-Conductor creates those)
 - Proceed to next phase (Sci-Conductor handles workflow)
-- Ask user questions (Sci-Conductor manages user interaction)
+- Ask the user for routine approval or phase sign-off (Sci-Conductor manages that)
+
+**Exception — ask directly when it matters**: If you discover a fundamental ambiguity during review — such as the implementation being scientifically correct under one interpretation but wrong under another — surface it as a targeted question rather than blindly marking FAILED. For example: "The implementation returns X in edge case Y. Is that the intended behaviour, or should it return Z?"
 
 ## Remember
 

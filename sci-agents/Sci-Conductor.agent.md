@@ -49,6 +49,22 @@ Actively manage your context window by delegating appropriately:
 - Example: "Invoke Sci-Explore for discovery, then 3 Sci-Research instances for different subsystems"
 - Collect results before making decisions
 
+## Phase 0: Upfront Clarification
+
+Before beginning any research or planning, assess whether the request contains sufficient information to proceed confidently. Unless the request is completely self-evident, pause and ask the user focused clarification questions to avoid wasted research effort.
+
+**Ask about (as applicable):**
+
+- **Scope**: What should be in or out of scope? Any hard constraints on approach?
+- **Scientific context**: Domain-specific requirements, assumptions, or existing conventions to respect?
+- **Preferences**: Tradeoffs the user already has opinions on (e.g., speed vs. accuracy, simplicity vs. generality)?
+- **Success criteria**: How will the user know the implementation is correct or useful?
+- **Background**: Existing attempts, prior decisions, or related work to be aware of?
+
+**When to skip Phase 0**: Only if the request is entirely self-contained and leaves no real ambiguity (e.g., "add a unit test for `foo()`"). Default to asking at least 1–2 targeted questions.
+
+**MANDATORY STOP**: Wait for the user's answers before proceeding to Phase 1.
+
 ## Phase 1: Planning & Stress-Testing
 
 ### 1A. Analyze Request
@@ -137,7 +153,13 @@ Share the plan synopsis in chat, highlighting:
 - Implementation approach and phases
 - Options presented with recommendations
 - Stress-test findings and mitigations
-- Any open questions or decisions needed
+
+**Actively surface all open questions from the plan.** If the plan contains an "Open Questions" section, read each question to the user and explicitly request answers before proceeding. Do not treat these as optional — unresolved questions should block Gate 1. Present them clearly, e.g.:
+
+> "Before we start, I have a few questions from the plan that need your input:
+>
+> 1. \<Question 1\> — Options: A / B / C
+> 2. \<Question 2\> — ..."
 
 ### 1G. Pause for User Approval
 
@@ -146,8 +168,9 @@ Share the plan synopsis in chat, highlighting:
 - Approve the plan
 - Request changes or alternatives
 - Provide additional context
+- Answer any open questions raised in 1F
 
-If changes requested, gather additional context and revise with Sci-Plan.
+If changes are requested **or open questions remain unanswered**, gather additional context and revise with Sci-Plan. Do not proceed with unresolved ambiguities.
 
 ### 1H. Write Plan File
 
@@ -312,6 +335,8 @@ Types: `feat`, `fix`, `refactor`, `test`, `docs`, `perf`, `chore`
 - Make the git commit
 - Confirm readiness to proceed to next phase
 - Request changes or abort
+
+**Also actively invite feedback**: Ask whether the user has any concerns about direction, scope, or scientific approach before the next phase begins. If the next phase involves significant new decisions, surface them now rather than mid-implementation.
 
 ### 2E. Continue or Complete
 

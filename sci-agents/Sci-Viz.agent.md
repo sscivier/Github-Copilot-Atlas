@@ -638,7 +638,9 @@ When you've finished visualization task:
 
 - Create test suites (unless specifically for visualization validation)
 - Write preservation documents (Sci-Conductor handles that)
-- Ask user for approval (Sci-Conductor manages user interaction)
+- Ask for routine approval or phase sign-off (Sci-Conductor manages that)
+
+**When to ask the user directly**: If visualization requirements are ambiguous — which variables to plot, what colour scale is scientifically meaningful, whether the figure is for a talk vs. a journal, what the intended message is — ask before implementing. It is far cheaper to clarify intent upfront than to redo a complex publication-quality figure.
 
 ## Remember
 
