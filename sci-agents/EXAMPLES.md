@@ -9,6 +9,7 @@ This document provides concrete examples of using the Sci-Agents suite for commo
 - [Example 3: Exploratory Notebook](#example-3-exploratory-notebook)
 - [Example 4: Publication Figure](#example-4-publication-figure)
 - [Example 5: Optimization Algorithm](#example-5-optimization-algorithm)
+- [Example 6: Debug Numerical Instability](#example-6-debug-numerical-instability)
 
 ## Example 1: Implement Custom GP Kernel
 
@@ -542,6 +543,192 @@ def train_gp(
         history['train_loss'].append(loss.item())
     
     return history
+```
+
+## Example 6: Debug Numerical Instability
+
+### Scenario: Cholesky Failure in Gibbs Kernel
+
+After changing the lengthscale network initialization in your Gibbs kernel, the PSD property test intermittently fails with a Cholesky decomposition error. The error is non-obvious because it only triggers for certain input configurations.
+
+### User Request: Debug Cholesky Failure
+
+```text
+@Sci-Debug
+
+Our test_gibbs_kernel_properties test is failing intermittently with:
+
+  RuntimeError: linalg.cholesky_ex: The factorization could not be completed 
+  because the input is not positive-definite (the leading minor of order 7 
+  is not positive-definite).
+
+This started after we changed the lengthscale NN initialization in commit abc123.
+It doesn't fail every run — maybe 1 in 5 times.
+```
+
+### Expected Workflow: Debugging Lifecycle
+
+#### Phase 0: Triage
+
+Sci-Debug collects evidence and classifies:
+
+- **Type**: Numerical Error (Cholesky failure → non-PSD kernel matrix)
+- **Severity**: Major (blocks GP training)
+- **Scope**: Single module (`kernels/gibbs.py`), triggered by property test
+- **Non-deterministic**: Yes — depends on Hypothesis-generated inputs
+
+**Triage summary presented to user:**
+
+> This is a numerical instability in the Gibbs kernel matrix computation. The kernel
+> matrix is losing positive-definiteness for certain input configurations after the
+> initialization change. I'll reproduce with a fixed seed, trace which inputs trigger
+> it, and check whether the lengthscale network produces near-zero values that cause
+> instability.
+
+#### Phase 1: Diagnosis
+
+**1A. Reproduce:**
+
+```bash
+uv run pytest tests/unit/test_gibbs_kernel.py::test_gibbs_kernel_properties -v --tb=long -p no:randomly -s
+```
+
+Run multiple times to capture a failing case. Use Hypothesis database to replay.
+
+**1B. Map affected code** (Sci-Explore):
+
+- `src/package/kernels/gibbs.py::GibbsKernel.forward` — kernel computation
+- `src/package/kernels/gibbs.py::LengthscaleNN.forward` — lengthscale output
+- `src/package/kernels/gibbs.py::LengthscaleNN.__init__` — **recently changed initialization**
+
+**1D. Isolate root cause:**
+
+Add diagnostic checks:
+
+```python
+# In GibbsKernel.forward, add:
+l1 = self.lengthscale_net(x1)
+print(f"l1 range: [{l1.min():.2e}, {l1.max():.2e}]")
+print(f"l1 has zeros: {(l1 < 1e-10).any()}")
+```
+
+Findings: New initialization produces near-zero lengthscales for certain inputs → `l_mean ** 2` approaches zero → division produces extreme values → kernel matrix has entries > 1 → loses PSD property.
+
+**1E. Root cause analysis:**
+
+```markdown
+## Root Cause Analysis
+
+**Symptom**: Intermittent Cholesky failure in test_gibbs_kernel_properties
+
+**Root Cause**: New Xavier initialization of the lengthscale NN allows weights
+that produce near-zero lengthscales (< 1e-8) for certain input ranges. When
+l(x) ≈ 0, the term ||x - x'||² / l(x)² overflows, and exp() of the result
+produces NaN or extreme values, breaking the PSD property of the kernel matrix.
+
+The previous Kaiming initialization biased weights toward larger values,
+masking this instability.
+
+**Proposed Fix**: Increase the minimum lengthscale floor in LengthscaleNN.forward
+from 1e-6 to 1e-4, and add a maximum lengthscale cap for symmetry. This bounds
+the kernel computation and guarantees PSD output.
+```
+
+#### Phase 2: Fix
+
+```python
+# In LengthscaleNN.forward — BEFORE (buggy)
+def forward(self, x: torch.Tensor) -> torch.Tensor:
+    h = self.network(x)
+    return F.softplus(h) + 1e-6  # Floor too small for new init
+
+# AFTER (fixed)
+def forward(self, x: torch.Tensor) -> torch.Tensor:
+    h = self.network(x)
+    # Clamp lengthscales to [1e-4, 1e4] for numerical stability
+    return torch.clamp(F.softplus(h) + 1e-4, max=1e4)
+```
+
+Verify: original failing test now passes. Full suite: all green.
+
+#### Phase 3: Regression Protection
+
+```python
+@pytest.mark.unit
+def test_regression_near_zero_lengthscale(device, dtype):
+    """Regression: near-zero lengthscales must not break PSD property.
+    
+    See: plans/gibbs-kernel/debug-report.md
+    """
+    net = LengthscaleNN(input_dim=2, hidden_dims=[32, 32])
+    kernel = GibbsKernel(net).to(device=device, dtype=dtype)
+    
+    # Inputs that previously triggered near-zero lengthscales
+    x = torch.tensor([[1e6, -1e6], [0.0, 0.0]], device=device, dtype=dtype)
+    
+    K = kernel(x, x).to_dense()
+    
+    # Must be PSD
+    eigvals = torch.linalg.eigvalsh(K)
+    assert torch.all(eigvals >= -1e-6), f"Non-PSD eigenvalue: {eigvals.min()}"
+    # Must not contain NaN
+    assert not torch.isnan(K).any(), "Kernel matrix contains NaN"
+
+
+@pytest.mark.properties
+@given(n=st.integers(2, 30))
+def test_property_kernel_always_psd(n):
+    """Property: Gibbs kernel must always produce PSD matrices."""
+    net = LengthscaleNN(input_dim=2, hidden_dims=[16])
+    kernel = GibbsKernel(net)
+    
+    x = torch.randn(n, 2) * 100  # Wide range of inputs
+    K = kernel(x, x).to_dense()
+    
+    eigvals = torch.linalg.eigvalsh(K)
+    assert torch.all(eigvals >= -1e-5)
+```
+
+#### Phase 4: Debug Session Report
+
+```markdown
+# Debug Session Report: Gibbs Kernel Cholesky Failure
+
+## Error Summary
+- **Type**: Numerical Error
+- **Severity**: Major
+- **Scope**: Single module (kernels/gibbs.py)
+
+## Symptom
+Intermittent RuntimeError in torch.linalg.cholesky_ex during property test.
+
+## Root Cause
+Xavier initialization of lengthscale NN produces near-zero lengthscales
+for extreme inputs, causing overflow in kernel computation and loss of
+PSD property. Previous Kaiming init masked this by biasing toward larger values.
+
+## Fix Applied
+Increased minimum lengthscale floor from 1e-6 to 1e-4 and added maximum
+cap of 1e4 in LengthscaleNN.forward.
+
+### Files Modified
+- `src/package/kernels/gibbs.py`: Updated lengthscale clamping bounds
+
+### Regression Tests Added  
+- `tests/unit/test_gibbs_kernel.py::test_regression_near_zero_lengthscale`
+- `tests/unit/test_gibbs_kernel.py::test_property_kernel_always_psd`
+
+## Verification
+- [x] Original error resolved
+- [x] Full test suite passes (including 10x repeated property test)
+- [x] Quality checks pass (ruff, mypy)
+- [x] Regression tests added
+- [x] Review: APPROVED
+
+## Lessons Learned
+- **Prevention**: Always test with extreme input ranges, not just standard normal
+- **Detection**: Add conditioning number checks in kernel test fixtures
+- **Category**: Numerical instability — insufficient lower bound on derived quantity
 ```
 
 ## Tips for Effective Agent Usage

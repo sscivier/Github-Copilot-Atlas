@@ -14,15 +14,16 @@ The Sci-Agents suite provides orchestrated development workflows with built-in s
 4. **Sci-Explore**: Fast codebase exploration and pattern discovery
 5. **Sci-Implement**: TDD-driven implementation with numerical stability
 6. **Sci-Review**: Scientific correctness and quality validation
-7. **Sci-Notebook**: Jupyter notebook specialist for exploratory analysis
-8. **Sci-Viz**: Visualization using matplotlib
+7. **Sci-Debug**: Systematic debugging and error resolution
+8. **Sci-Notebook**: Jupyter notebook specialist for exploratory analysis
+9. **Sci-Viz**: Visualization using matplotlib
 
 ## Development Workflow
 
 ### Standard Lifecycle
 
 ```text
-Planning → Stress-Test → Implementation → Review → Preserve → Commit
+Planning → Stress-Test → Implementation → Review / Debug → Preserve → Commit
 ```
 
 **Key Stages:**
@@ -31,8 +32,9 @@ Planning → Stress-Test → Implementation → Review → Preserve → Commit
 2. **Stress-Test**: Automatically identify edge cases, failure modes, resource requirements
 3. **Implementation**: Sci-Implement follows strict TDD with numerical stability
 4. **Review**: Sci-Review validates correctness, reproducibility, quality
-5. **Preserve**: Document decisions, assumptions, verifications for traceability
-6. **Commit**: User commits with generated message, cycle repeats for next phase
+5. **Debug**: Sci-Debug diagnoses and resolves failures from review or testing
+6. **Preserve**: Document decisions, assumptions, verifications for traceability
+7. **Commit**: User commits with generated message, cycle repeats for next phase
 
 ### Stress-Testing
 
@@ -193,6 +195,42 @@ Explanation of what was found
 
 **Output**: Structured review with APPROVED / NEEDS_REVISION / FAILED status
 
+### Sci-Debug (Debugging Conductor)
+
+**Model**: Claude Sonnet 4.6
+
+**Role**: Systematic debugging and error resolution in scientific Python
+
+**When to Use**: When tests fail, reviews return NEEDS_REVISION, runtime errors occur, or users report unexpected behavior
+
+**Key Features**:
+
+- Full debugging lifecycle: Triage → Diagnose → Isolate → Fix → Verify → Regression-Test
+- Scientific debugging expertise (numerical instability, device mismatches, shape errors)
+- Automatic regression test generation for every fix
+- Escalation protocol when diagnosis stalls (Rule 8: know when to restart)
+- Can delegate to Sci-Explore, Sci-Research, Sci-Implement, Sci-Review
+
+**Trigger Conditions**:
+
+- Failing tests (pytest failures, assertion errors)
+- Runtime errors (stack traces, exceptions)
+- Review failures (Sci-Review NEEDS_REVISION)
+- Lint/type errors (ruff, mypy)
+- User-reported bugs (unexpected behavior)
+
+**Output**: Debug session report with root cause, fix, regression tests, and commit message
+
+**Invocation**:
+
+```text
+@Sci-Debug
+
+Our Gibbs kernel test_psd_property is failing with a Cholesky decomposition error.
+Stack trace shows RuntimeError in torch.linalg.cholesky_ex at line 42 of gibbs.py.
+This started after we changed the lengthscale network initialization.
+```
+
 ### Sci-Notebook (Notebook Agent)
 
 **Model**: Claude Sonnet 4.6
@@ -255,7 +293,7 @@ Create a tutorial notebook demonstrating how to use our custom Gibbs kernel with
 | 5. Context Management | All | Structured handoffs, preservation docs |
 | 6. Test-Driven Development | Sci-Implement | Strict TDD: tests first, minimal code |
 | 7. Test Planning | Sci-Plan, Sci-Implement | Comprehensive test strategy |
-| 8. Monitor Progress | Sci-Conductor | Phase tracking, stress-testing |
+| 8. Monitor Progress | Sci-Conductor, Sci-Debug | Phase tracking, stress-testing, escalation protocol |
 | 9. Critical Review | Sci-Review | Scientific correctness validation |
 | 10. Incremental Refinement | Sci-Conductor | Phase-by-phase development cycle |
 
@@ -281,8 +319,9 @@ in geophysical fields (e.g., across fault boundaries). The kernel should:
 2. Stress-test identifies edge cases (discontinuity boundaries, numerical stability)
 3. Sci-Implement creates tests first, then implements kernel
 4. Sci-Review validates correctness and GPU compatibility
-5. Preservation documents design decisions and trade-offs
-6. User commits, cycle continues for next phase
+5. If NEEDS_REVISION: Sci-Debug diagnoses and fixes issues, adds regression tests
+6. Preservation documents design decisions and trade-offs
+7. User commits, cycle continues for next phase
 
 ### Example 2: Exploratory Data Analysis
 

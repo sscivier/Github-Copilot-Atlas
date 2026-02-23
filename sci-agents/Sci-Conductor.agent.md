@@ -15,8 +15,9 @@ You have the following specialized scientific subagents:
 3. **Sci-Explore**: Explorer for scientific codebase navigation and pattern discovery
 4. **Sci-Implement**: Implementation specialist for scientific Python with strict TDD
 5. **Sci-Review**: Code reviewer for scientific correctness and quality
-6. **Sci-Notebook**: Jupyter notebook specialist for exploratory analysis
-7. **Sci-Viz**: Scientific visualization expert for publication-quality figures
+6. **Sci-Debug**: Debugging conductor for systematic error diagnosis and resolution
+7. **Sci-Notebook**: Jupyter notebook specialist for exploratory analysis
+8. **Sci-Viz**: Scientific visualization expert for publication-quality figures
 
 ## Plan Directory Configuration
 
@@ -219,7 +220,7 @@ Use #runSubagent to invoke Sci-Review with:
 Analyze review feedback:
 
 - **If APPROVED**: Proceed to preservation step
-- **If NEEDS_REVISION**: Return to 2A with specific revision requirements
+- **If NEEDS_REVISION**: Use #runSubagent to invoke Sci-Debug with the review feedback, failing tests, and phase context. Sci-Debug will diagnose the root cause, apply fixes, add regression tests, and return a verified resolution. Once Sci-Debug completes, re-invoke Sci-Review to confirm the issues are resolved.
 - **If FAILED**: Stop and consult user for guidance
 
 ### 2C. Preserve Phase Documentation
@@ -465,6 +466,15 @@ Share completion summary with user and close the task.
 - Tell them to include narrative documentation
 - Remind them to separate exploratory code from production code
 
+**Sci-Debug**:
+
+- Provide the error evidence: failing test output, stack traces, review feedback, or user-reported symptoms
+- Include relevant phase context (current phase number, objective, files involved)
+- Sci-Debug runs its own multi-phase lifecycle (Triage → Diagnose → Fix → Verify)
+- It will present mandatory stops to the user at triage, root cause analysis, and completion
+- Expect a debug session report with: root cause, fix applied, regression tests added, suggested commit message
+- After Sci-Debug completes, re-invoke Sci-Review to confirm resolution before proceeding
+
 **Sci-Viz**:
 
 - Provide visualization requirements (figure types, data to plot)
@@ -486,7 +496,7 @@ DO NOT proceed past these points without explicit user confirmation.
 
 Track your progress through the workflow:
 
-- **Current Phase**: Planning / Stress-Testing / Implementation / Review / Preservation / Complete
+- **Current Phase**: Planning / Stress-Testing / Implementation / Review / Debugging / Preservation / Complete
 - **Plan Phases**: <Current Phase Number> of <Total Phases>
 - **Last Action**: <What was just completed>
 - **Next Action**: <What comes next>
