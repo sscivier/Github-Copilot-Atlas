@@ -2,7 +2,7 @@
 description: 'Research scientific context, algorithms, libraries, and best practices for Python projects'
 argument-hint: Research goal or scientific question
 tools: ['search', 'search/usages', 'read/problems', 'search/changes', 'execute/testFailure', 'web/fetch', 'agent']
-model: GPT-5.2 (copilot)
+model: Claude Sonnet 4.6 (copilot)
 user-invokable: false
 ---
 

@@ -106,7 +106,7 @@ I need to implement a new Gaussian process kernel with spatially-varying lengths
 
 ### Sci-Research (Research Agent)
 
-**Model**: GPT-5.2
+**Model**: Claude Sonnet 4.6
 
 **Role**: Gathers scientific context, algorithm details, best practices
 
