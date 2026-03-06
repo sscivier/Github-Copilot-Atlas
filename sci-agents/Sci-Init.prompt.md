@@ -18,7 +18,7 @@ Then research the project to discover:
 
 - **Python toolchain**: `uv`, `pip`, or `conda`; check for `uv.lock`, `requirements.txt`, `environment.yml`
 - **Test framework**: `pytest` configuration, markers (`gpu_ready`, `slow`, `integration`), fixture conventions, snapshot directories
-- **Linting / formatting**: `ruff`, `mypy`, `pre-commit` hooks and their commands
+- **Linting / formatting**: `ruff`, `ty`, `pre-commit` hooks and their commands
 - **Scientific domain**: GPs, PDEs, geophysics, climate, neuroscience, etc.
 - **Core libraries**: PyTorch, GPyTorch, XArray, NumPy, SciPy, Matplotlib, Cartopy, Hypothesis, etc.
 - **Data layout**: directory paths, file formats (NetCDF, HDF5, CSV, Zarr), XArray Dataset schema conventions
@@ -40,7 +40,7 @@ Generate concise, actionable instructions (~30–60 lines) using this structure.
 ## Code Style
 - Format: `uv run ruff format .`
 - Lint: `uv run ruff check --fix .`
-- Type check: `uv run mypy src/`
+- Type check: `uv run ty check src/`
 - Docstrings: Google-style
 
 ## Architecture

@@ -355,7 +355,7 @@ Research covers:
 1. Optional dependencies for CPU vs CUDA builds
 2. Using tool.uv.conflicts for mutually exclusive extras
 3. Custom index configuration for PyTorch wheels
-4. Development workflows (pytest, ruff, mypy)
+4. Development workflows (pytest, ruff, ty)
 5. Pre-commit integration
 
 Findings include:

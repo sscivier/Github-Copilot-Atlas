@@ -265,7 +265,7 @@ For any major design decisions, present options:
 2. Implement minimal code to pass tests
 3. Verify tests pass
 4. Run linting/formatting (ruff)
-5. Type check (mypy)
+5. Type check (ty)
 6. Verify reproducibility (seed management, determinism)
 
 **Numerical Validation:**
@@ -322,7 +322,7 @@ Surface **all genuine ambiguities** here — do not silently resolve them with a
 
 - Use `uv` for dependency management (`uv add`, `uv sync`, `uv run pytest`)
 - Follow Google-style docstrings (enforced by ruff)
-- Use type hints (checked by mypy)
+- Use type hints (checked by ty)
 - Use Hypothesis for property-based testing of mathematical invariants
 - Test on multiple dtypes (float32, float64) and devices (CPU, GPU via gpu_ready marker)
 - Use pytest markers: `unit`, `integration`, `properties`, `gpu_ready`, `perf`, `slow`

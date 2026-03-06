@@ -144,7 +144,7 @@ Verify tests cover:
 - **All functions have type hints**: Parameters and return types
 - **Type hints are accurate**: Match actual types used
 - **Complex types documented**: Using `typing` module
-- **mypy passes**: No type errors
+- **ty passes**: No type errors
 
 #### Documentation (Google Style)
 

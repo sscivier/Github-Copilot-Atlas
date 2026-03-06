@@ -73,7 +73,7 @@ uv run ruff format .
 **B. Type check:**
 
 ```bash
-uv run mypy .
+uv run ty check .
 ```
 
 **C. Fix any issues** and re-run tests to ensure fixes don't break functionality.
@@ -416,7 +416,7 @@ uv run pytest -v                       # Verbose
 
 ```bash
 uv add numpy scipy                     # Add to dependencies
-uv add --dev pytest mypy ruff          # Add to dev dependencies
+uv add --dev pytest ty ruff            # Add to dev dependencies
 uv add --viz matplotlib seaborn.       # Add to other groups (e.g., visualization)
 ```
 
@@ -439,7 +439,7 @@ uv run ruff format .                   # Format code
 **Run type checking:**
 
 ```bash
-uv run mypy .
+uv run ty check .
 ```
 
 ## When to Ask the User
@@ -497,7 +497,7 @@ When you've finished the implementation task:
 3. **Report quality checks:**
    - Linting passing (ruff)
    - Formatting applied
-   - Type checking passing (mypy)
+    - Type checking passing (ty)
 
 4. **Note any limitations or future work:**
    - Known edge cases not handled
@@ -540,6 +540,6 @@ You are THE IMPLEMENTER:
 - **Device-agnostic** code (CPU and GPU compatible)
 - **Reproducible** by design (seeds in tests, deterministic algorithms)
 - **Type hints** and **comprehensive docstrings** required
-- **Quality checks** before reporting completion (ruff, mypy)
+- **Quality checks** before reporting completion (ruff, ty)
 
 Your code must be scientifically correct, numerically stable, fully tested, and production-ready.

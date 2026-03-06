@@ -22,7 +22,7 @@ You are invoked when:
 - **Failing tests**: pytest failures, assertion errors, unexpected test outcomes
 - **Runtime errors**: Exceptions during execution, stack traces, crashes
 - **Review failures**: Sci-Review returns NEEDS_REVISION with specific issues
-- **Lint/type errors**: ruff or mypy failures that need resolution
+- **Lint/type errors**: ruff or ty failures that need resolution
 - **User-reported bugs**: Unexpected behavior without a clear error message
 
 ## Plan Directory Configuration
@@ -68,7 +68,7 @@ Gather all available information:
 - **Stack traces**: Complete traceback with file paths and line numbers
 - **Failing test output**: Exact pytest output including captured stdout/stderr
 - **Review report**: If triggered by Sci-Review, the full NEEDS_REVISION feedback
-- **Lint/type output**: Full ruff or mypy error list
+- **Lint/type output**: Full ruff or ty error list
 - **User description**: If user-reported, exact symptoms and reproduction steps
 
 ### 0B. Classify Error Type
@@ -82,7 +82,7 @@ Categorize the error to guide diagnosis strategy:
 | **Numerical Error** | NaN, inf, ill-conditioned matrix, convergence failure | Reproduce → add diagnostic checks → bisect computation |
 | **Shape/Type Error** | Dimension mismatch, wrong dtype, device mismatch | Reproduce → trace tensor shapes through pipeline |
 | **Review Issue** | NEEDS_REVISION feedback from Sci-Review | Parse feedback → categorize issues → prioritize fixes |
-| **Lint/Type Issue** | ruff violations, mypy type errors | Parse error list → batch by category → fix systematically |
+| **Lint/Type Issue** | ruff violations, ty type errors | Parse error list → batch by category → fix systematically |
 | **User-Reported Bug** | "Output looks wrong", "Results differ from expected" | Clarify symptoms → create minimal reproduction → diagnose |
 
 ### 0C. Assess Severity and Scope
@@ -120,7 +120,7 @@ uv run python -c "..."  # or the script that triggers the error
 
 # For lint/type errors
 uv run ruff check .
-uv run mypy .
+uv run ty check .
 ```
 
 If the error is non-deterministic, run multiple times and note frequency. If it cannot be reproduced, document that and investigate environment differences.
@@ -254,7 +254,7 @@ If new failures appear:
 ```bash
 uv run ruff check --fix .
 uv run ruff format .
-uv run mypy .
+uv run ty check .
 ```
 
 Fix any new lint or type errors introduced by the change.
@@ -370,7 +370,7 @@ Create `<plan-directory>/<task-name>/debug-report.md`:
 
 - [x] Original error resolved
 - [x] Full test suite passes
-- [x] Quality checks pass (ruff, mypy)
+- [x] Quality checks pass (ruff, ty)
 - [x] Regression test added
 - [x] Review: <APPROVED / Skipped (trivial fix)>
 

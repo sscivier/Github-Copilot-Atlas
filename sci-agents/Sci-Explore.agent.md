@@ -160,7 +160,7 @@ tests/
 
 Check for scientific Python setup:
 
-- `pyproject.toml`: Dependencies, uv config, tool settings (ruff, mypy, pytest)
+- `pyproject.toml`: Dependencies, uv config, tool settings (ruff, ty, pytest)
 - `.pre-commit-config.yaml`: Code quality hooks
 - `uv.lock`: Locked dependencies
 - `.python-version`: Python version pinning
