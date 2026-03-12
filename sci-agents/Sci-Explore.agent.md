@@ -1,7 +1,7 @@
 ---
 description: 'Explore scientific Python codebases to find files, patterns, dependencies, and structure'
 argument-hint: Find files, patterns, and context related to <research goal>
-tools: ['search', 'search/usages', 'read/problems', 'search/changes', 'execute/testFailure']
+tools: ['search/codebase', 'search/fileSearch', 'search/listDirectory', 'search/textSearch', 'search/usages', 'read/readFile', 'read/problems', 'search/changes', 'execute/testFailure']
 model: GPT-5.4 (copilot)
 agents: []
 ---

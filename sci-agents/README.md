@@ -1,6 +1,6 @@
 # Scientific Python Development Agents
 
-A comprehensive suite of specialized AI agents for scientific Python development, tailored for theoretical and computational geophysics with Gaussian processes, inversions, and forward modeling. These agents follow the [Ten Simple Rules for AI-Assisted Coding in Science](https://arxiv.org/abs/2510.22254) and support modern Python workflows with uv, NumPy, SciPy, PyTorch, GPyTorch, Matplotlib, XArray, and Ruff.
+A comprehensive suite of specialized AI agents for scientific Python development, tailored for theoretical and computational geophysics with Gaussian processes, inversions, and forward modeling. These agents follow the [Ten Simple Rules for AI-Assisted Coding in Science](https://arxiv.org/abs/2510.22254) and support modern Python workflows with uv, NumPy, SciPy, PyTorch, GPyTorch, Matplotlib, XArray, Ruff, and ty.
 
 ## Overview
 
@@ -14,9 +14,10 @@ The Sci-Agents suite provides orchestrated development workflows with built-in s
 4. **Sci-Explore**: Fast codebase exploration and pattern discovery
 5. **Sci-Implement**: TDD-driven implementation with numerical stability
 6. **Sci-Review**: Scientific correctness and quality validation
-7. **Sci-Debug**: Systematic debugging and error resolution
-8. **Sci-Notebook**: Jupyter notebook specialist for exploratory analysis
-9. **Sci-Viz**: Visualization using matplotlib
+7. **Sci-Debug**: Approval-gated debugging for user-guided investigations
+8. **Sci-Debug-Auto**: Autonomous remediation for conductor-driven review loops
+9. **Sci-Notebook**: Jupyter notebook specialist for exploratory analysis
+10. **Sci-Viz**: Visualization using matplotlib
 
 ## Development Workflow
 
@@ -32,7 +33,7 @@ Planning → Stress-Test → Implementation → Review / Debug → Preserve → 
 2. **Stress-Test**: Automatically identify edge cases, failure modes, resource requirements
 3. **Implementation**: Sci-Implement follows strict TDD with numerical stability
 4. **Review**: Sci-Review validates correctness, reproducibility, quality
-5. **Debug**: Sci-Debug diagnoses and resolves failures from review or testing
+5. **Debug**: Sci-Debug-Auto handles conductor remediation, while Sci-Debug remains available for approval-gated user-guided debugging
 6. **Preserve**: Document decisions, assumptions, verifications for traceability
 7. **Commit**: User commits with generated message, cycle repeats for next phase
 
@@ -61,7 +62,7 @@ Format: `plans/<task>/phase-<N>-preserve.md`
 
 ### Sci-Conductor (Orchestrator)
 
-**Model**: Claude Sonnet 4.6
+**Model**: GPT-5.4
 
 **Role**: Manages the full development lifecycle, coordinates all subagents
 
@@ -84,7 +85,7 @@ I need to implement a new Gaussian process kernel with spatially-varying lengths
 
 ### Sci-Plan (Planning Agent)
 
-**Model**: Claude Opus 4.6
+**Model**: Claude Opus 4.6, Claude Sonnet 4.6
 
 **Role**: Creates comprehensive implementation plans with options and tradeoffs
 
@@ -106,7 +107,7 @@ I need to implement a new Gaussian process kernel with spatially-varying lengths
 
 ### Sci-Research (Research Agent)
 
-**Model**: Claude Sonnet 4.6
+**Model**: GPT-5.4
 
 **Role**: Gathers scientific context, algorithm details, best practices
 
@@ -127,13 +128,14 @@ I need to implement a new Gaussian process kernel with spatially-varying lengths
 
 ### Sci-Explore (Exploration Agent)
 
-**Model**: Claude Haiku 4.5
+**Model**: GPT-5.4
 
 **Role**: Fast codebase exploration and pattern discovery
 
 **Key Features**:
 
 - Parallel search strategy (semantic, grep, file search)
+- Strategic file reading for interfaces, configuration, and dependency confirmation
 - Understands scientific Python project structures
 - Recognizes test organization (unit, integration, properties, GPU-ready)
 - Maps dependencies quickly
@@ -176,11 +178,11 @@ Explanation of what was found
 - `uv run pytest` (all tests pass)
 - `uv run ruff check --fix .` (linting)
 - `uv run ruff format .` (formatting)
-- `uv run mypy .` (type checking)
+- `uv run ty check .` (type checking)
 
 ### Sci-Review (Review Agent)
 
-**Model**: Claude Opus 4.6
+**Model**: GPT-5.4
 
 **Role**: Validates scientific correctness and code quality
 
@@ -195,19 +197,20 @@ Explanation of what was found
 
 **Output**: Structured review with APPROVED / NEEDS_REVISION / FAILED status
 
-### Sci-Debug (Debugging Conductor)
+### Sci-Debug (Approval-Gated Debugger)
 
-**Model**: Claude Sonnet 4.6
+**Model**: GPT-5.4
 
-**Role**: Systematic debugging and error resolution in scientific Python
+**Role**: Systematic debugging and error resolution in scientific Python with explicit user approval checkpoints
 
-**When to Use**: When tests fail, reviews return NEEDS_REVISION, runtime errors occur, or users report unexpected behavior
+**When to Use**: When tests fail, runtime errors occur, or users want a user-guided debugging workflow with approval gates at triage, root cause analysis, and completion
 
 **Key Features**:
 
 - Full debugging lifecycle: Triage → Diagnose → Isolate → Fix → Verify → Regression-Test
 - Scientific debugging expertise (numerical instability, device mismatches, shape errors)
 - Automatic regression test generation for every fix
+- Explicit approval checkpoints before diagnosis proceeds and before fixes are applied
 - Escalation protocol when diagnosis stalls (Rule 8: know when to restart)
 - Can delegate to Sci-Explore, Sci-Research, Sci-Implement, Sci-Review
 
@@ -216,10 +219,10 @@ Explanation of what was found
 - Failing tests (pytest failures, assertion errors)
 - Runtime errors (stack traces, exceptions)
 - Review failures (Sci-Review NEEDS_REVISION)
-- Lint/type errors (ruff, mypy)
+- Lint/type errors (ruff, ty)
 - User-reported bugs (unexpected behavior)
 
-**Output**: Debug session report with root cause, fix, regression tests, and commit message
+**Output**: Debug session report with root cause, proposed or applied fix, regression tests, and commit message
 
 **Invocation**:
 
@@ -230,6 +233,24 @@ Our Gibbs kernel test_psd_property is failing with a Cholesky decomposition erro
 Stack trace shows RuntimeError in torch.linalg.cholesky_ex at line 42 of gibbs.py.
 This started after we changed the lengthscale network initialization.
 ```
+
+### Sci-Debug-Auto (Autonomous Remediation Agent)
+
+**Model**: GPT-5.4
+
+**Role**: Autonomous remediation of review, test, and runtime failures for conductor-driven workflows
+
+**When to Use**: Used internally by Sci-Conductor when Sci-Review returns NEEDS_REVISION or when conductor-driven remediation should proceed without user approval checkpoints
+
+**Key Features**:
+
+- Reproduces and diagnoses the concrete failure before changing code
+- Applies minimal fixes with regression protection
+- Verifies the original failure, targeted tests, and quality checks
+- Returns structured `RESOLVED` or `ESCALATE` results back to Sci-Conductor
+- Invokes Sci-Review again for significant fixes before the workflow proceeds
+
+**Availability**: Internal subagent for orchestration; not directly user-invocable.
 
 ### Sci-Notebook (Notebook Agent)
 
@@ -262,7 +283,7 @@ Create a tutorial notebook demonstrating how to use our custom Gibbs kernel with
 
 ### Sci-Viz (Visualization Agent)
 
-**Model**: Claude Sonnet 4.6, Gemini 3 Pro
+**Model**: Claude Sonnet 4.6
 
 **Role**: Creates scientific visualizations
 
@@ -293,7 +314,7 @@ Create a tutorial notebook demonstrating how to use our custom Gibbs kernel with
 | 5. Context Management | All | Structured handoffs, preservation docs |
 | 6. Test-Driven Development | Sci-Implement | Strict TDD: tests first, minimal code |
 | 7. Test Planning | Sci-Plan, Sci-Implement | Comprehensive test strategy |
-| 8. Monitor Progress | Sci-Conductor, Sci-Debug | Phase tracking, stress-testing, escalation protocol |
+| 8. Monitor Progress | Sci-Conductor, Sci-Debug, Sci-Debug-Auto | Phase tracking, stress-testing, escalation protocol |
 | 9. Critical Review | Sci-Review | Scientific correctness validation |
 | 10. Incremental Refinement | Sci-Conductor | Phase-by-phase development cycle |
 
@@ -319,7 +340,7 @@ in geophysical fields (e.g., across fault boundaries). The kernel should:
 2. Stress-test identifies edge cases (discontinuity boundaries, numerical stability)
 3. Sci-Implement creates tests first, then implements kernel
 4. Sci-Review validates correctness and GPU compatibility
-5. If NEEDS_REVISION: Sci-Debug diagnoses and fixes issues, adds regression tests
+5. If NEEDS_REVISION: Sci-Debug-Auto diagnoses and fixes issues, adds regression tests, then Sci-Review confirms resolution
 6. Preservation documents design decisions and trade-offs
 7. User commits, cycle continues for next phase
 
@@ -390,7 +411,7 @@ These agents expect projects using:
 - **Python**: 3.12+ (managed with uv)
 - **Package Manager**: uv (<https://docs.astral.sh/uv/>)
 - **Key Libraries**: NumPy, SciPy, PyTorch, GPyTorch, XArray, Matplotlib
-- **Code Quality**: Ruff (linting + formatting), mypy (type checking)
+- **Code Quality**: Ruff (linting + formatting), ty (type checking)
 - **Testing**: pytest, hypothesis, pytest-cov
 
 **Example `pyproject.toml` structure**:
@@ -416,7 +437,7 @@ cuda = ["torch>=2.5"]
 conflicts = [[{ extra = "cpu" }, { extra = "cuda" }]]
 
 [dependency-groups]
-dev = ["ruff>=0.8", "mypy>=1.13"]
+dev = ["ruff>=0.8", "ty"]
 test = ["pytest>=8.0", "pytest-cov>=6.0", "hypothesis>=6.0"]
 
 [tool.pytest.ini_options]

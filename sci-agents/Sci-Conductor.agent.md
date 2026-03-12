@@ -15,9 +15,10 @@ You have the following specialized scientific subagents:
 3. **Sci-Explore**: Explorer for scientific codebase navigation and pattern discovery
 4. **Sci-Implement**: Implementation specialist for scientific Python with strict TDD
 5. **Sci-Review**: Code reviewer for scientific correctness and quality
-6. **Sci-Debug**: Debugging conductor for systematic error diagnosis and resolution
-7. **Sci-Notebook**: Jupyter notebook specialist for exploratory analysis
-8. **Sci-Viz**: Scientific visualization expert for publication-quality figures
+6. **Sci-Debug**: Approval-gated debugging conductor for user-guided investigations
+7. **Sci-Debug-Auto**: Autonomous remediation agent for conductor-driven review loops
+8. **Sci-Notebook**: Jupyter notebook specialist for exploratory analysis
+9. **Sci-Viz**: Scientific visualization expert for publication-quality figures
 
 ## Plan Directory Configuration
 
@@ -220,7 +221,7 @@ Use #runSubagent to invoke Sci-Review with:
 Analyze review feedback:
 
 - **If APPROVED**: Proceed to preservation step
-- **If NEEDS_REVISION**: Use #runSubagent to invoke Sci-Debug with the review feedback, failing tests, and phase context. Sci-Debug will diagnose the root cause, apply fixes, add regression tests, and return a verified resolution. Once Sci-Debug completes, re-invoke Sci-Review to confirm the issues are resolved.
+- **If NEEDS_REVISION**: Use #runSubagent to invoke Sci-Debug-Auto with the review feedback, failing tests, and phase context. Sci-Debug-Auto will diagnose the root cause, apply fixes, add regression tests, and return either a verified resolution or a concrete escalation report. Once Sci-Debug-Auto resolves the issues, re-invoke Sci-Review to confirm the issues are resolved. If Sci-Debug-Auto escalates, stop and consult the user with the unresolved findings.
 - **If FAILED**: Stop and consult user for guidance
 
 ### 2C. Preserve Phase Documentation
@@ -468,12 +469,20 @@ Share completion summary with user and close the task.
 
 **Sci-Debug**:
 
+- Use when the user wants an interactive debugging session with explicit approval checkpoints
 - Provide the error evidence: failing test output, stack traces, review feedback, or user-reported symptoms
 - Include relevant phase context (current phase number, objective, files involved)
 - Sci-Debug runs its own multi-phase lifecycle (Triage → Diagnose → Fix → Verify)
-- It will present mandatory stops to the user at triage, root cause analysis, and completion
+- It presents mandatory stops to the user at triage, root cause analysis, and completion
 - Expect a debug session report with: root cause, fix applied, regression tests added, suggested commit message
-- After Sci-Debug completes, re-invoke Sci-Review to confirm resolution before proceeding
+
+**Sci-Debug-Auto**:
+
+- Use when Sci-Review returns NEEDS_REVISION or when conductor-driven remediation should continue without user checkpoints
+- Provide the error evidence: failing test output, stack traces, review feedback, and phase context
+- Expect a structured result with either RESOLVED or ESCALATE status
+- If RESOLVED, re-invoke Sci-Review to confirm resolution before proceeding
+- If ESCALATE, surface the unresolved findings to the user and pause
 
 **Sci-Viz**:
 
