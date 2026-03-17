@@ -7,12 +7,12 @@ argument-hint: Optionally specify a focus area (e.g. GP models, XArray pipelines
 
 Related agent: `Sci-Conductor`. Related skill: `agent-customization`.
 
-Generate or update the workspace instructions file (`AGENTS.md` as first choice, or `.github/copilot-instructions.md` if already present) to guide AI coding agents in this scientific Python project.
+Generate or update the workspace `AGENTS.md` file to guide AI coding agents in this scientific Python project.
 
 ## Discovery
 
 Search for existing AI conventions and project metadata using this glob pattern:
-`**/{AGENTS.md,.github/copilot-instructions.md,AGENT.md,CLAUDE.md,.cursorrules,pyproject.toml,uv.lock,setup.py,README.md,.pre-commit-config.yaml}`
+`**/{AGENTS.md,AGENT.md,CLAUDE.md,.cursorrules,pyproject.toml,uv.lock,setup.py,README.md,.pre-commit-config.yaml}`
 
 Then research the project to discover:
 
