@@ -43,7 +43,7 @@ Implement only what's needed to pass the tests:
 - Focus on correctness, not optimization
 - Handle edge cases identified in tests
 - Add type hints
-- Write Google-style docstrings
+- Write Sphinx reST docstrings
 
 ### 3. Verify Tests Pass
 
@@ -157,12 +157,9 @@ Write code that works on both CPU and GPU:
 ```python
 def some_function(x: torch.Tensor) -> torch.Tensor:
     """Process tensor on same device as input.
-    
-    Args:
-        x: Input tensor on any device
-        
-    Returns:
-        Result tensor on same device as x
+
+    :param x: Input tensor on any device.
+    :returns: Result tensor on the same device as ``x``.
     """
     device = x.device
     # Create new tensors on same device
@@ -214,22 +211,18 @@ def process_data(
     normalize: bool = True,
 ) -> Tuple[torch.Tensor, torch.Tensor]:
     """Process data with optional weighting.
-    
-    Args:
-        x: Input data, shape (n, d)
-        weights: Optional weights, shape (n,)
-        normalize: Whether to normalize output
-        
-    Returns:
-        processed: Processed data, shape (n, d)
-        stats: Statistics, shape (d,)
+
+    :param x: Input data with shape ``(n, d)``.
+    :param weights: Optional weights with shape ``(n,)``.
+    :param normalize: Whether to normalize the output.
+    :returns: Tuple ``(processed, stats)`` with shapes ``(n, d)`` and ``(d,)``.
     """
     ...
 ```
 
-### Documentation (Google Style)
+### Documentation (Sphinx reST Style)
 
-Write comprehensive Google-style docstrings:
+Write comprehensive Sphinx reST docstrings:
 
 ```python
 def gaussian_kernel(
@@ -238,31 +231,27 @@ def gaussian_kernel(
     lengthscale: torch.Tensor,
 ) -> torch.Tensor:
     """Compute Gaussian (RBF) kernel between input points.
-    
+
     Computes k(x1, x2) = exp(-||x1 - x2||^2 / (2 * lengthscale^2))
-    
-    Args:
-        x1: First set of points, shape (n1, d)
-        x2: Second set of points, shape (n2, d)
-        lengthscale: Length scale parameter, shape (d,) or scalar
-        
-    Returns:
-        Kernel matrix, shape (n1, n2)
-        
-    Raises:
-        ValueError: If x1 and x2 have different feature dimensions
-        
-    Examples:
+
+    :param x1: First set of points with shape ``(n1, d)``.
+    :param x2: Second set of points with shape ``(n2, d)``.
+    :param lengthscale: Length scale parameter with shape ``(d,)`` or scalar.
+    :returns: Kernel matrix with shape ``(n1, n2)``.
+    :raises ValueError: If ``x1`` and ``x2`` have different feature dimensions.
+
+    Example::
+
         >>> x1 = torch.randn(10, 3)
         >>> x2 = torch.randn(5, 3)
         >>> lengthscale = torch.tensor(1.0)
         >>> K = gaussian_kernel(x1, x2, lengthscale)
         >>> K.shape
         torch.Size([10, 5])
-        
-    Note:
-        This implementation is numerically stable but may be memory-intensive
-        for large inputs. Consider using a streaming approach for n1, n2 > 10000.
+
+    .. note::
+       This implementation is numerically stable but may be memory-intensive
+       for large inputs. Consider using a streaming approach for ``n1, n2 > 10000``.
     """
     ...
 ```

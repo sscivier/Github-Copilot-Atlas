@@ -105,17 +105,16 @@ def plot_spatial_field(
     save_path: str = None,
 ) -> None:
     """Plot 2D spatial field with proper labels and colorbar.
-    
-    Args:
-        x: X coordinates (1D or 2D grid)
-        y: Y coordinates (1D or 2D grid)
-        values: Field values (2D)
-        title: Plot title
-        xlabel: X-axis label with units
-        ylabel: Y-axis label with units
-        cbar_label: Colorbar label with units
-        cmap: Colormap name
-        save_path: If provided, save figure here
+
+    :param x: X coordinates as a 1D array or 2D grid.
+    :param y: Y coordinates as a 1D array or 2D grid.
+    :param values: Field values with shape compatible with the plotting grid.
+    :param title: Plot title.
+    :param xlabel: X-axis label with units.
+    :param ylabel: Y-axis label with units.
+    :param cbar_label: Colorbar label with units.
+    :param cmap: Colormap name.
+    :param save_path: Optional output path for saving the figure.
     """
     fig, ax = plt.subplots(figsize=(10, 8))
     
@@ -156,17 +155,16 @@ def plot_with_uncertainty(
     save_path: str = None,
 ) -> None:
     """Plot predictions with uncertainty bands.
-    
-    Args:
-        x: Prediction locations (1D)
-        y_mean: Mean predictions (1D)
-        y_std: Standard deviations (1D)
-        y_obs: Optional observed values (1D)
-        x_obs: Optional observation locations (1D)
-        xlabel: X-axis label with units
-        ylabel: Y-axis label with units
-        title: Plot title
-        save_path: If provided, save figure here
+
+    :param x: Prediction locations as a 1D array.
+    :param y_mean: Mean predictions as a 1D array.
+    :param y_std: Standard deviations as a 1D array.
+    :param y_obs: Optional observed values as a 1D array.
+    :param x_obs: Optional observation locations as a 1D array.
+    :param xlabel: X-axis label with units.
+    :param ylabel: Y-axis label with units.
+    :param title: Plot title.
+    :param save_path: Optional output path for saving the figure.
     """
     fig, ax = plt.subplots(figsize=(10, 6))
     
@@ -231,13 +229,12 @@ def plot_comparison_grid(
     save_path: str = None,
 ) -> None:
     """Plot multiple fields in a grid for comparison.
-    
-    Args:
-        data_list: List of 2D arrays to plot
-        titles: List of subplot titles
-        suptitle: Overall figure title
-        cmap: Colormap name
-        save_path: If provided, save figure here
+
+    :param data_list: List of 2D arrays to plot.
+    :param titles: Titles for each subplot.
+    :param suptitle: Overall figure title.
+    :param cmap: Colormap name.
+    :param save_path: Optional output path for saving the figure.
     """
     n = len(data_list)
     ncols = min(3, n)
@@ -294,14 +291,13 @@ def plot_contours(
     save_path: str = None,
 ) -> None:
     """Plot contour map of 2D field.
-    
-    Args:
-        x: X coordinates (2D grid)
-        y: Y coordinates (2D grid)
-        z: Values (2D)
-        levels: Number of contour levels
-        filled: Whether to fill contours
-        save_path: If provided, save figure here
+
+    :param x: X coordinates on a 2D grid.
+    :param y: Y coordinates on a 2D grid.
+    :param z: Field values on a 2D grid.
+    :param levels: Number of contour levels.
+    :param filled: Whether to fill contours.
+    :param save_path: Optional output path for saving the figure.
     """
     fig, ax = plt.subplots(figsize=(10, 8))
     
@@ -341,13 +337,12 @@ def plot_time_series(
     save_path: str = None,
 ) -> None:
     """Plot time series with proper date formatting.
-    
-    Args:
-        times: Datetime array
-        values: Values (1D)
-        ylabel: Y-axis label with units
-        title: Plot title
-        save_path: If provided, save figure here
+
+    :param times: Datetime array.
+    :param values: Values as a 1D array.
+    :param ylabel: Y-axis label with units.
+    :param title: Plot title.
+    :param save_path: Optional output path for saving the figure.
     """
     fig, ax = plt.subplots(figsize=(12, 6))
     
@@ -384,13 +379,12 @@ def plot_3d_surface(
     save_path: str = None,
 ) -> None:
     """Plot 3D surface.
-    
-    Args:
-        x: X coordinates (2D grid)
-        y: Y coordinates (2D grid)
-        z: Z values (2D)
-        title: Plot title
-        save_path: If provided, save figure here
+
+    :param x: X coordinates on a 2D grid.
+    :param y: Y coordinates on a 2D grid.
+    :param z: Surface values on a 2D grid.
+    :param title: Plot title.
+    :param save_path: Optional output path for saving the figure.
     """
     fig = plt.figure(figsize=(12, 9))
     ax = fig.add_subplot(111, projection='3d')
@@ -459,12 +453,11 @@ def plot_geospatial(
     save_path: str = None,
 ) -> None:
     """Plot geospatial data on map projection.
-    
-    Args:
-        lon: Longitude coordinates
-        lat: Latitude coordinates
-        values: Data values
-        save_path: If provided, save figure here
+
+    :param lon: Longitude coordinates.
+    :param lat: Latitude coordinates.
+    :param values: Data values to render on the map.
+    :param save_path: Optional output path for saving the figure.
     """
     fig = plt.figure(figsize=(14, 8))
     ax = plt.axes(projection=ccrs.PlateCarree())

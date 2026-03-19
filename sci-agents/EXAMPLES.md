@@ -469,21 +469,18 @@ def train_gp(
     checkpoint_path: Optional[Path] = None,
 ) -> Dict[str, Any]:
     """Train GP model with early stopping and checkpointing.
-    
-    Args:
-        model: GPyTorch model
-        likelihood: GPyTorch likelihood
-        train_x: Training inputs
-        train_y: Training targets
-        val_x: Optional validation inputs
-        val_y: Optional validation targets
-        num_epochs: Maximum training epochs
-        lr: Initial learning rate
-        patience: Early stopping patience
-        checkpoint_path: Path to save best model
-        
-    Returns:
-        Dictionary with training history and best model state
+
+    :param model: GPyTorch model.
+    :param likelihood: GPyTorch likelihood.
+    :param train_x: Training inputs.
+    :param train_y: Training targets.
+    :param val_x: Optional validation inputs.
+    :param val_y: Optional validation targets.
+    :param num_epochs: Maximum number of training epochs.
+    :param lr: Initial learning rate.
+    :param patience: Early stopping patience.
+    :param checkpoint_path: Optional path used to save the best model.
+    :returns: Dictionary containing training history and best-model state.
     """
     # Setup
     model.train()

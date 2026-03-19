@@ -321,7 +321,7 @@ Surface **all genuine ambiguities** here — do not silently resolve them with a
 **Scientific Python Best Practices:**
 
 - Use `uv` for dependency management (`uv add`, `uv sync`, `uv run pytest`)
-- Follow Google-style docstrings (enforced by ruff)
+- Follow Sphinx reST docstrings; keep them PEP 257-compliant when Ruff docstring rules are enabled
 - Use type hints (checked by ty)
 - Use Hypothesis for property-based testing of mathematical invariants
 - Test on multiple dtypes (float32, float64) and devices (CPU, GPU via gpu_ready marker)

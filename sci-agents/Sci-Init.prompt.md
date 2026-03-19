@@ -41,7 +41,7 @@ Generate concise, actionable instructions (~30–60 lines) using this structure.
 - Format: `uv run ruff format .`
 - Lint: `uv run ruff check --fix .`
 - Type check: `uv run ty check src/`
-- Docstrings: Google-style
+- Docstrings: Sphinx reST style
 
 ## Architecture
 - {Core module layout and purpose of each top-level package}

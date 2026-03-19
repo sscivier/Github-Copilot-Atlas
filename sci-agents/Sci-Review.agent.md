@@ -146,15 +146,15 @@ Verify tests cover:
 - **Complex types documented**: Using `typing` module
 - **ty passes**: No type errors
 
-#### Documentation (Google Style)
+#### Documentation (Sphinx reST Style)
 
-- **All public functions documented**: Google-style docstrings
-- **Args section complete**: All parameters described
-- **Returns section clear**: Return values explained
-- **Raises section present**: Exceptions documented
+- **All public functions documented**: Sphinx reST docstrings
+- **Parameter fields complete**: All parameters described with ``:param:`` fields
+- **Return fields clear**: Return values explained with ``:returns:``
+- **Raises fields present**: Exceptions documented with ``:raises:``
 - **Examples provided**: Useful usage examples
 - **Mathematical notation**: Equations in docstrings if relevant
-- **Notes/warnings included**: Limitations, performance considerations
+- **Notes/warnings included**: Limitations and performance considerations via reST directives or clear prose
 
 #### Code Style
 
@@ -295,8 +295,8 @@ Return a comprehensive review following the template below.
 
 <Assessment of docstring quality and completeness>
 
-- Google-style docstrings: <yes/no>
-- Args/Returns/Raises documented: <yes/no>
+- Sphinx reST docstrings: <yes/no>
+- Param/Returns/Raises fields documented: <yes/no>
 - Examples provided: <yes/no>
 - Mathematical notation: <yes/no, if appropriate>
 

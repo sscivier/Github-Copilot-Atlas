@@ -170,7 +170,7 @@ Explanation of what was found
 - Numerical stability expertise (log-space, Cholesky, conditioning)
 - Edge case testing (NaN, inf, empty, dimension mismatches)
 - Device-agnostic code (CPU/GPU compatible)
-- Type hints and Google-style docstrings
+- Type hints and Sphinx reST docstrings
 - uv workflow integration
 
 **Quality Checks**:
@@ -453,7 +453,7 @@ markers = [
 select = ["E", "F", "UP", "B", "SIM", "I", "D"]
 
 [tool.ruff.lint.pydocstyle]
-convention = "google"
+convention = "pep257"
 ```
 
 ## Best Practices
@@ -472,7 +472,7 @@ convention = "google"
 2. **Design device-agnostic**: Works on CPU and GPU without changes
 3. **Ensure reproducibility**: Seeds in tests, deterministic algorithms
 4. **Validate scientifically**: Known solutions, conservation laws, invariants
-5. **Document thoroughly**: Google-style docstrings with equations and units
+5. **Document thoroughly**: Sphinx reST docstrings with equations and units
 
 ### For Reproducibility
 
