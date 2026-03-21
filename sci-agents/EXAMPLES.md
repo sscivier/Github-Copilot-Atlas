@@ -10,6 +10,7 @@ This document provides concrete examples of using the Sci-Agents suite for commo
 - [Example 4: Publication Figure](#example-4-publication-figure)
 - [Example 5: Optimization Algorithm](#example-5-optimization-algorithm)
 - [Example 6: Debug Numerical Instability](#example-6-debug-numerical-instability)
+- [Example 7: Sphinx API Documentation](#example-7-sphinx-api-documentation)
 
 ## Example 1: Implement Custom GP Kernel
 
@@ -79,6 +80,8 @@ For each phase:
 4. **Commit**:
    - User commits with generated message
    - Proceed to next phase
+
+If the kernel becomes part of the public package surface, Sci-Conductor can insert a dedicated **Sci-Docs** phase to update Sphinx API pages, math-rich docstrings, and release-facing narrative documentation before preserve and commit.
 
 ### Key Code Artifacts
 
@@ -728,6 +731,65 @@ cap of 1e4 in LengthscaleNN.forward.
 - **Category**: Numerical instability — insufficient lower bound on derived quantity
 ```
 
+## Example 7: Sphinx API Documentation
+
+### Scenario: Documenting a Public Inversion Module
+
+You have stabilized a new inversion module and now need formal documentation for users and collaborators. The code already exists, but the Sphinx docs are incomplete and the API reference does not expose the new classes.
+
+### User Request: Sphinx Documentation Refresh
+
+```text
+@Sci-Docs
+
+Document our new inversion module in Sphinx. I need:
+
+- Sphinx reST docstrings for the public estimator classes and helper functions
+- An API reference page under docs/api/
+- A conceptual guide describing assumptions, units, convergence behavior, and failure modes
+- Validation with the existing docs build workflow
+- Broken references fixed if they are introduced or currently block the build
+```
+
+### Expected Workflow: Documentation Lifecycle
+
+#### Phase 1: Discovery
+
+Sci-Docs inspects:
+
+- The docs root (`docs/`, `source/`, or project-specific equivalent)
+- Existing build commands (`make html`, `uv run sphinx-build`, CI tasks)
+- Public Python modules that should appear in the API reference
+- Existing docs conventions for toctrees, autodoc, and autosummary
+
+#### Phase 2: Author Documentation
+
+Sci-Docs updates:
+
+1. **Docstrings**: Add Sphinx reST fields for parameters, returns, raises, equations, and notes
+2. **API Reference**: Add or repair reST pages under `docs/api/`
+3. **Narrative Guide**: Explain scientific assumptions, units, convergence behavior, and limitations
+4. **Navigation**: Update toctrees and cross-references so the new docs are discoverable
+
+#### Phase 3: Validate
+
+Sci-Docs runs the repository's documentation workflow and checks:
+
+- HTML build succeeds
+- Warning-to-error mode is respected when configured
+- Cross-references resolve
+- Autodoc imports succeed
+- Example snippets still match the public API
+
+#### Phase 4: Report Back
+
+Sci-Docs returns:
+
+- Files updated
+- Validation commands run
+- Warnings fixed
+- Residual documentation debt or follow-up recommendations
+
 ## Tips for Effective Agent Usage
 
 ### 1. Be Specific
@@ -763,6 +825,7 @@ Mention:
 - **Multi-phase projects**: Start with Sci-Conductor
 - **Quick exploration**: Use Sci-Explore directly
 - **Research question**: Use Sci-Research directly
+- **Formal package docs**: Use Sci-Docs directly
 - **Notebook tutorial**: Use Sci-Notebook directly
 - **Single figure**: Use Sci-Viz directly
 

@@ -155,6 +155,9 @@ Verify tests cover:
 - **Examples provided**: Useful usage examples
 - **Mathematical notation**: Equations in docstrings if relevant
 - **Notes/warnings included**: Limitations and performance considerations via reST directives or clear prose
+- **Narrative docs consistent**: API reference and explanatory pages match the implementation when docs are in scope
+- **Sphinx structure valid**: Toctrees, autodoc/autosummary targets, and cross-references resolve cleanly
+- **Docs validation passes**: Relevant documentation build or validation commands succeed when documentation artifacts changed
 
 #### Code Style
 

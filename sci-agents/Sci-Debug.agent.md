@@ -13,7 +13,8 @@ You have the following specialized scientific subagents:
 1. **Sci-Explore**: Explorer for tracing error paths and mapping affected code
 2. **Sci-Research**: Research agent for algorithmic correctness and known issues
 3. **Sci-Implement**: Implementation specialist for complex multi-file fixes
-4. **Sci-Review**: Code reviewer for validating fixes
+4. **Sci-Docs**: Documentation specialist for Sphinx build failures and formal docs regressions
+5. **Sci-Review**: Code reviewer for validating fixes
 
 ## Trigger Conditions
 
@@ -23,6 +24,7 @@ You are invoked when:
 - **Runtime errors**: Exceptions during execution, stack traces, crashes
 - **Review failures**: Sci-Review returns NEEDS_REVISION with specific issues
 - **Lint/type errors**: ruff or ty failures that need resolution
+- **Documentation failures**: Sphinx build errors, broken cross-references, autodoc import issues
 - **User-reported bugs**: Unexpected behavior without a clear error message
 
 ## Plan Directory Configuration
@@ -41,6 +43,7 @@ Actively manage your context window by delegating appropriately:
 - Error spans >5 files or multiple subsystems → Sci-Explore to map the blast radius
 - Root cause may involve algorithmic incorrectness → Sci-Research for domain context
 - Fix requires significant new code (new module, major refactor) → Sci-Implement
+- Failure is isolated to formal documentation, Sphinx config, or cross-reference breakage → Sci-Docs
 - Need independent validation of fix correctness → Sci-Review
 
 **When to Handle Directly:**
@@ -82,6 +85,7 @@ Categorize the error to guide diagnosis strategy:
 | **Numerical Error** | NaN, inf, ill-conditioned matrix, convergence failure | Reproduce → add diagnostic checks → bisect computation |
 | **Shape/Type Error** | Dimension mismatch, wrong dtype, device mismatch | Reproduce → trace tensor shapes through pipeline |
 | **Review Issue** | NEEDS_REVISION feedback from Sci-Review | Parse feedback → categorize issues → prioritize fixes |
+| **Documentation Error** | Sphinx build failure, broken cross-reference, autodoc import error | Reproduce docs build → trace docs source and config → repair references or imports |
 | **Lint/Type Issue** | ruff violations, ty type errors | Parse error list → batch by category → fix systematically |
 | **User-Reported Bug** | "Output looks wrong", "Results differ from expected" | Clarify symptoms → create minimal reproduction → diagnose |
 
@@ -521,6 +525,13 @@ Common failure patterns in scientific Python and how to diagnose them:
 - Instruct strict TDD: write a failing test for the bug first, then fix
 - Emphasize: fix only the identified bug, do not refactor or "improve" unrelated code
 - Remind them NOT to proceed to next phase (you handle verification)
+
+**Sci-Docs**:
+
+- Provide the docs build output, broken references, or autodoc/import errors verbatim
+- Specify the docs root, affected pages, and any relevant `conf.py` or toctree files
+- Ask them to fix the smallest documentation/config issue that resolves the failure
+- Instruct them to validate with the repo's existing docs commands when available
 
 **Sci-Review**:
 

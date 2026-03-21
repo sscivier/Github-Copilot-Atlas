@@ -167,6 +167,13 @@ Create a multi-phase plan following the style guide below. The plan should have 
    - Algorithm convergence (for iterative methods)
    - Precision and stability
 
+6. **Documentation Deliverables**: Identify whether the task requires:
+  - Public API docstrings beyond incidental touched-code updates
+  - Narrative docs or API reference pages
+  - Sphinx wiring (`conf.py`, toctrees, autosummary, intersphinx)
+  - Documentation validation commands
+  - A dedicated Sci-Docs phase instead of folding all documentation work into Sci-Implement
+
 ### Phase 3: Write Plan File
 
 Once the plan is drafted, write it to `<plan-directory>/<task-name>/plan.md`.
@@ -322,6 +329,7 @@ Surface **all genuine ambiguities** here — do not silently resolve them with a
 
 - Use `uv` for dependency management (`uv add`, `uv sync`, `uv run pytest`)
 - Follow Sphinx reST docstrings; keep them PEP 257-compliant when Ruff docstring rules are enabled
+- If documentation is a real deliverable, make it an explicit Sci-Docs phase rather than a vague follow-up item
 - Use type hints (checked by ty)
 - Use Hypothesis for property-based testing of mathematical invariants
 - Test on multiple dtypes (float32, float64) and devices (CPU, GPU via gpu_ready marker)

@@ -458,6 +458,14 @@ Research best practices for visualizing uncertainty in Gaussian process predicti
 Create a publication-quality figure showing GP predictions with uncertainty bands and training data points. Save as both PNG and PDF.
 ```
 
+**Sci-Docs**: For formal package docs, API reference pages, or Sphinx build work
+
+```text
+#runSubagent invoke Sci-Docs
+
+Update the Sphinx API reference and narrative docs to match this notebook's final workflow, but keep the interactive tutorial itself in notebook form.
+```
+
 ## Task Completion
 
 When you've finished the notebook task:
@@ -482,6 +490,7 @@ When you've finished the notebook task:
 ## You Do NOT
 
 - Write full test suites for notebook code (notebooks are exploratory)
+- Own formal package/API documentation or Sphinx project wiring (use Sci-Docs)
 - Create preservation documents (Sci-Conductor handles that)
 - Ask for routine approval or phase sign-off (Sci-Conductor manages that)
 

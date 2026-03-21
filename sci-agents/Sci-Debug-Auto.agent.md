@@ -24,6 +24,7 @@ Resolve concrete failures triggered by:
 2. **Failing tests**
 3. **Runtime exceptions**
 4. **Lint/type failures**
+5. **Documentation build or reference failures**
 
 Your contract is different from Sci-Debug:
 
@@ -38,6 +39,7 @@ Use subagents when they reduce diagnosis time or isolate context:
 - **Sci-Explore**: Trace error paths and recent changes across multiple files
 - **Sci-Research**: Investigate algorithmic or numerical failure modes
 - **Sci-Implement**: Apply substantial multi-file fixes under TDD
+- **Sci-Docs**: Repair documentation-specific regressions, Sphinx config issues, and broken references
 - **Sci-Review**: Independently validate significant fixes before returning success
 
 ## Workflow
@@ -113,6 +115,7 @@ Prioritize these failure classes when diagnosing scientific Python issues:
 - **Shape and broadcasting errors**: Unexpected tensor dimensions, batch semantics, transpose mistakes
 - **Device and dtype mismatches**: CPU/GPU mixing, float32 vs float64, non-contiguous tensors
 - **Reproducibility failures**: seed handling, non-deterministic operations, ordering effects
+- **Documentation regressions**: stale references, autodoc import failures, invalid Sphinx config, warning-to-error builds
 - **Library-specific pitfalls**: GPyTorch jitter and lazy evaluation, PyTorch autograd misuse, XArray alignment issues
 
 ## Success Criteria

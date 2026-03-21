@@ -16,8 +16,9 @@ The Sci-Agents suite provides orchestrated development workflows with built-in s
 6. **Sci-Review**: Scientific correctness and quality validation
 7. **Sci-Debug**: Approval-gated debugging for user-guided investigations
 8. **Sci-Debug-Auto**: Autonomous remediation for conductor-driven review loops
-9. **Sci-Notebook**: Jupyter notebook specialist for exploratory analysis
-10. **Sci-Viz**: Visualization using matplotlib
+9. **Sci-Docs**: Sphinx reST documentation specialist for APIs and formal docs
+10. **Sci-Notebook**: Jupyter notebook specialist for exploratory analysis
+11. **Sci-Viz**: Visualization using matplotlib
 
 ## Development Workflow
 
@@ -31,7 +32,7 @@ Planning → Stress-Test → Implementation → Review / Debug → Preserve → 
 
 1. **Planning**: Sci-Plan creates comprehensive plans with implementation options
 2. **Stress-Test**: Automatically identify edge cases, failure modes, resource requirements
-3. **Implementation**: Sci-Implement follows strict TDD with numerical stability
+3. **Implementation / Documentation**: Sci-Implement handles core code while Sci-Docs handles formal package docs, API reference work, and Sphinx validation when in scope
 4. **Review**: Sci-Review validates correctness, reproducibility, quality
 5. **Debug**: Sci-Debug-Auto handles conductor remediation, while Sci-Debug remains available for approval-gated user-guided debugging
 6. **Preserve**: Document decisions, assumptions, verifications for traceability
@@ -209,10 +210,11 @@ Explanation of what was found
 
 - Full debugging lifecycle: Triage → Diagnose → Isolate → Fix → Verify → Regression-Test
 - Scientific debugging expertise (numerical instability, device mismatches, shape errors)
+- Documentation debugging coverage (Sphinx builds, autodoc import failures, broken references)
 - Automatic regression test generation for every fix
 - Explicit approval checkpoints before diagnosis proceeds and before fixes are applied
 - Escalation protocol when diagnosis stalls (Rule 8: know when to restart)
-- Can delegate to Sci-Explore, Sci-Research, Sci-Implement, Sci-Review
+- Can delegate to Sci-Explore, Sci-Research, Sci-Implement, Sci-Docs, Sci-Review
 
 **Trigger Conditions**:
 
@@ -220,6 +222,7 @@ Explanation of what was found
 - Runtime errors (stack traces, exceptions)
 - Review failures (Sci-Review NEEDS_REVISION)
 - Lint/type errors (ruff, ty)
+- Documentation failures (Sphinx build errors, broken cross-references, autodoc issues)
 - User-reported bugs (unexpected behavior)
 
 **Output**: Debug session report with root cause, proposed or applied fix, regression tests, and commit message
@@ -251,6 +254,39 @@ This started after we changed the lengthscale network initialization.
 - Invokes Sci-Review again for significant fixes before the workflow proceeds
 
 **Availability**: Internal subagent for orchestration; not directly user-invocable.
+
+### Sci-Docs (Documentation Agent)
+
+**Model**: Claude Sonnet 4.6
+
+**Role**: Creates and maintains formal Sphinx reST documentation for public scientific Python APIs and workflows
+
+**Use Cases**:
+
+- Public API docstrings with equations, units, shapes, and failure modes
+- API reference pages using autodoc or autosummary
+- Narrative docs pages (how-to, tutorials, conceptual guides, references)
+- Sphinx project wiring (`conf.py`, toctrees, intersphinx, extensions)
+- Docs build validation (HTML, doctest, linkcheck, warning cleanup)
+
+**Best Practices**:
+
+- Keep scientific claims aligned with the implementation and tests
+- Preserve the repository's existing Sphinx structure unless a change is justified
+- Prefer verifiable examples over aspirational prose
+- Document numerical assumptions, parameter constraints, and limitations explicitly
+- Validate with the repo's existing docs commands when available
+
+**Invocation**:
+
+```text
+@Sci-Docs
+
+Document our public Gibbs kernel module for Sphinx. I need reST docstrings for the
+public classes, an API reference page, and a short narrative page explaining the
+non-stationary lengthscale model and its numerical stability constraints. Please
+use the existing docs build workflow and fix any broken references you touch.
+```
 
 ### Sci-Notebook (Notebook Agent)
 
@@ -339,10 +375,11 @@ in geophysical fields (e.g., across fault boundaries). The kernel should:
 1. Sci-Plan creates plan with options (indicator covariance, windowed kernels, etc.)
 2. Stress-test identifies edge cases (discontinuity boundaries, numerical stability)
 3. Sci-Implement creates tests first, then implements kernel
-4. Sci-Review validates correctness and GPU compatibility
-5. If NEEDS_REVISION: Sci-Debug-Auto diagnoses and fixes issues, adds regression tests, then Sci-Review confirms resolution
-6. Preservation documents design decisions and trade-offs
-7. User commits, cycle continues for next phase
+4. If the kernel is public-facing, Sci-Docs updates API reference pages, docstrings, and narrative docs before release
+5. Sci-Review validates correctness and GPU compatibility
+6. If NEEDS_REVISION: Sci-Debug-Auto diagnoses and fixes issues, adds regression tests, then Sci-Review confirms resolution
+7. Preservation documents design decisions and trade-offs
+8. User commits, cycle continues for next phase
 
 ### Example 2: Exploratory Data Analysis
 
@@ -365,7 +402,27 @@ Create an EDA notebook for our new gravity anomaly dataset. I need to:
 4. Documents findings and recommendations
 5. Extracts any reusable preprocessing code to modules
 
-### Example 3: Publication Figure
+### Example 3: Formal API Documentation
+
+```text
+@Sci-Docs
+
+Create Sphinx documentation for our new inversion API. I need:
+- Sphinx reST docstrings for the public estimator classes
+- An API reference page under docs/api/
+- A conceptual guide describing assumptions, units, and convergence behavior
+- Validation with the existing docs build command
+```
+
+**Workflow**:
+
+1. Sci-Docs inspects the docs tree, build commands, and public module surface
+2. Adds or updates reST docstrings and API reference pages
+3. Writes a narrative page covering assumptions, equations, and limitations
+4. Runs the repository's docs validation workflow and fixes broken references
+5. Reports remaining warnings or follow-up gaps explicitly
+
+### Example 4: Publication Figure
 
 ```text
 @Sci-Viz
@@ -465,6 +522,7 @@ convention = "pep257"
 3. **Preserve decisions**: Transparency prevents future confusion
 4. **Commit after each phase**: Incremental progress, easy rollback
 5. **Extract notebook code**: Move tested code to modules
+6. **Use Sci-Docs for formal docs**: Route API reference, narrative pages, and Sphinx validation to the docs specialist
 
 ### For Scientific Code
 
@@ -472,7 +530,7 @@ convention = "pep257"
 2. **Design device-agnostic**: Works on CPU and GPU without changes
 3. **Ensure reproducibility**: Seeds in tests, deterministic algorithms
 4. **Validate scientifically**: Known solutions, conservation laws, invariants
-5. **Document thoroughly**: Sphinx reST docstrings with equations and units
+5. **Document thoroughly**: Sphinx reST docstrings with equations and units; use Sci-Docs for API pages and Sphinx validation
 
 ### For Reproducibility
 
