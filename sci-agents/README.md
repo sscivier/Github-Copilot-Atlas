@@ -375,7 +375,7 @@ in geophysical fields (e.g., across fault boundaries). The kernel should:
 1. Sci-Plan creates plan with options (indicator covariance, windowed kernels, etc.)
 2. Stress-test identifies edge cases (discontinuity boundaries, numerical stability)
 3. Sci-Implement creates tests first, then implements kernel
-4. If the kernel is public-facing, Sci-Docs updates API reference pages, docstrings, and narrative docs before release
+4. If the kernel is public-facing, Sci-Docs updates API reference pages, docstrings, narrative docs, and documentation validation before release
 5. Sci-Review validates correctness and GPU compatibility
 6. If NEEDS_REVISION: Sci-Debug-Auto diagnoses and fixes issues, adds regression tests, then Sci-Review confirms resolution
 7. Preservation documents design decisions and trade-offs

@@ -63,6 +63,7 @@ If the root cause is still unclear after **3 diagnosis iterations**, stop and re
 
 - Apply the smallest defensible fix
 - For non-trivial changes, prefer a TDD loop: failing regression test first, then implementation
+- For documentation-only failures, prefer Sci-Docs over Sci-Implement unless the root cause is actually in executable code
 - Keep the fix scoped to the reported failure unless a wider contract must be updated to avoid regression
 
 ### Phase 3: Verify

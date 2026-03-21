@@ -200,7 +200,7 @@ Use #runSubagent to invoke the appropriate implementation subagent:
 - **Sci-Notebook**: Exploratory analysis, demonstrations, tutorials
 - **Sci-Viz**: Visualization functions, plotting utilities
 
-Provide:
+For **Sci-Implement**, **Sci-Notebook**, or **Sci-Viz**, provide:
 
 - Specific phase number and objective
 - Relevant files/functions to modify
@@ -208,6 +208,15 @@ Provide:
 - Explicit instruction to work autonomously and follow TDD
 - Numerical considerations (stability, precision, device compatibility)
 - Stress-test requirements from planning phase
+
+For **Sci-Docs**, provide:
+
+- Specific phase number and documentation objective
+- Relevant files/modules/pages/config to modify
+- Documentation acceptance criteria (docstrings, API coverage, narrative scope, cross-references)
+- Target audience and documentation type (reference, tutorial, how-to, concept)
+- Documentation validation requirements (build commands, warning handling, doctest/linkcheck if applicable)
+- Any scientific assumptions, equations, units, or limitations that must be documented
 
 Monitor implementation completion and collect the phase summary.
 

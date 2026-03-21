@@ -57,6 +57,7 @@ Actively manage your context window by delegating appropriately:
 
 - Parallelize Sci-Explore (trace error path) + Sci-Research (known failure patterns)
 - Chain: Sci-Explore → Sci-Research → fix → Sci-Review
+- For documentation failures: Sci-Explore → Sci-Docs → Sci-Review
 - Use multiple Sci-Explore instances for errors spanning different subsystems
 
 ## Phase 0: Triage
