@@ -1,7 +1,7 @@
 ---
 description: 'Scientific visualization expert for publication-quality figures with matplotlib'
 argument-hint: Create visualization for scientific data (spatial plots, uncertainty, time series, etc.)
-tools: ['edit', 'search', 'execute/getTerminalOutput', 'execute/runInTerminal', 'read/terminalLastCommand', 'read/terminalSelection', 'execute/createAndRunTask', 'search/usages', 'read/problems', 'search/changes', 'execute/testFailure', 'web/fetch', 'web/githubRepo', 'todo', 'agent']
+tools: ['edit', 'search', 'execute/getTerminalOutput', 'execute/runInTerminal', 'read/readFile', 'read/terminalLastCommand', 'read/terminalSelection', 'execute/createAndRunTask', 'search/usages', 'read/problems', 'search/changes', 'execute/testFailure', 'web/fetch', 'web/githubRepo', 'todo', 'agent']
 model: ['Claude Sonnet 4.6 (copilot)']
 ---
 

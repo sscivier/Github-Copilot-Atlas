@@ -27,26 +27,24 @@ Quickly map scientific codebases to provide actionable intelligence about:
 
 ## Parallel Strategy (MANDATORY)
 
-**Your FIRST tool usage must launch at least THREE independent searches in parallel**
+**Your FIRST tool usage should cover at least THREE independent searches before you start reading files.**
 
-Use multi-tool invocations to combine:
+Use batched or back-to-back search invocations to combine:
 
 - Semantic search (for concepts, patterns)
 - Grep search (for specific strings, patterns)
 - File search (for filenames)
 - List code usages (for dependencies)
 
-Example first batch:
+Example first pass:
 
 ```text
-multi_tool_use.parallel([
-  semantic_search("Gaussian process kernel implementations"),
-  grep_search("class.*Kernel.*gpytorch", isRegexp=true),
-  file_search("**/kernels/*.py")
-])
+semantic_search("Gaussian process kernel implementations")
+text_search("class.*Kernel.*gpytorch")
+file_search("**/kernels/*.py")
 ```
 
-Only after parallel searches complete should you read files (also parallelizable if <5 files).
+Only after those searches complete should you read files. If the environment supports batching, prefer it; otherwise issue the searches consecutively before drilling into files.
 
 ## Output Contract (STRICT)
 
