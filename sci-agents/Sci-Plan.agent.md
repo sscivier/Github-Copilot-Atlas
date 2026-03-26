@@ -1,7 +1,8 @@
 ---
 description: 'Autonomous planning agent for scientific Python projects with options, tradeoffs, and stress-testing'
 tools: ['edit', 'search/codebase', 'search/fileSearch', 'search/textSearch', 'search/usages', 'read/readFile', 'read/problems', 'search/changes', 'execute/testFailure', 'web/fetch', 'web/githubRepo', 'agent']
-model: Claude Opus 4.6 (copilot)
+agents: ['Sci-Explore', 'Sci-Research']
+model: ['Claude Opus 4.6 (copilot)', 'GPT-5.4 (copilot)']
 handoffs:
   - label: Start implementation with Sci-Conductor
     agent: Sci-Conductor
@@ -48,6 +49,13 @@ You must actively manage your context window by delegating research tasks:
 2. **Sci-Research**: Deep research on algorithms, libraries, best practices
 
 Use #runSubagent invoke to delegate research tasks.
+
+## Nested Subagent Policy
+
+- Your default decomposition is Sci-Plan → Sci-Explore for file mapping, then Sci-Plan → Sci-Research for deep analysis.
+- Allow Sci-Research to spawn Sci-Explore only when additional file discovery is required and you cannot scope it directly.
+- Do not create recursive planning chains and do not delegate plan writing.
+- If nested subagents are unavailable, invoke Sci-Explore and Sci-Research directly from Sci-Plan and continue.
 
 ## Core Constraints
 

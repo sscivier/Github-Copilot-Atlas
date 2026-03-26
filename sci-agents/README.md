@@ -6,6 +6,29 @@ A comprehensive suite of specialized AI agents for scientific Python development
 
 The Sci-Agents suite provides orchestrated development workflows with built-in stress-testing and preservation stages for transparency and traceability.
 
+## VS Code 1.113 Integration
+
+VS Code 1.113 adds two capabilities that directly affect this suite:
+
+- **Configurable thinking effort** is set in the VS Code model picker, not in `.agent.md` frontmatter.
+- **Nested subagents** allow a delegated agent to invoke another delegated agent, but only when `chat.subagents.allowInvocationsFromSubagents` is enabled.
+
+### Recommended Reasoning Tiers
+
+| Tier | Agents | Default model preference | Recommended thinking effort |
+| ---- | ------ | ------------------------ | --------------------------- |
+| Reasoning-first | Sci-Conductor, Sci-Plan, Sci-Research, Sci-Review, Sci-Debug, Sci-Debug-Auto | GPT-5.4 for Sci-Conductor; Claude Opus 4.6 → GPT-5.4 fallback for the others | High for architectural planning, scientific analysis, review, and debugging |
+| Discovery-first | Sci-Explore | GPT-5.4 → Claude Sonnet 4.6 fallback | Adaptive or low unless codebase discovery must be exhaustive |
+| Execution-first | Sci-Implement, Sci-Docs, Sci-Notebook, Sci-Viz | Claude Sonnet 4.6 → GPT-5.4 fallback | Adaptive or medium; raise only for unusually complex tasks |
+
+### Recommended Nested Routes
+
+- `Sci-Conductor → Sci-Plan → Sci-Explore / Sci-Research`
+- `Sci-Conductor → Sci-Debug-Auto → Sci-Explore / Sci-Research / Sci-Implement / Sci-Docs / Sci-Review`
+- `Sci-Debug → Sci-Explore / Sci-Research`, then `Sci-Debug → Sci-Implement or Sci-Docs → Sci-Review`
+
+If nested subagents are disabled, these agents are expected to continue with their own tools instead of blocking the workflow.
+
 ### Agent Roster
 
 1. **Sci-Conductor**: Orchestrator managing the full development lifecycle
@@ -63,7 +86,7 @@ Format: `plans/<task>/phase-<N>-preserve.md`
 
 ### Sci-Conductor (Orchestrator)
 
-**Model**: GPT-5.4
+**Model**: GPT-5.4 with Claude Opus 4.6 fallback
 
 **Role**: Manages the full development lifecycle, coordinates all subagents
 
@@ -86,7 +109,7 @@ I need to implement a new Gaussian process kernel with spatially-varying lengths
 
 ### Sci-Plan (Planning Agent)
 
-**Model**: Claude Opus 4.6, Claude Sonnet 4.6
+**Model**: Claude Opus 4.6 with GPT-5.4 fallback
 
 **Role**: Creates comprehensive implementation plans with options and tradeoffs
 
@@ -108,7 +131,7 @@ I need to implement a new Gaussian process kernel with spatially-varying lengths
 
 ### Sci-Research (Research Agent)
 
-**Model**: GPT-5.4
+**Model**: Claude Opus 4.6 with GPT-5.4 fallback
 
 **Role**: Gathers scientific context, algorithm details, best practices
 
@@ -129,7 +152,7 @@ I need to implement a new Gaussian process kernel with spatially-varying lengths
 
 ### Sci-Explore (Exploration Agent)
 
-**Model**: GPT-5.4
+**Model**: GPT-5.4 with Claude Sonnet 4.6 fallback
 
 **Role**: Fast codebase exploration and pattern discovery
 
@@ -161,7 +184,7 @@ Explanation of what was found
 
 ### Sci-Implement (Implementation Agent)
 
-**Model**: Claude Sonnet 4.6
+**Model**: Claude Sonnet 4.6 with GPT-5.4 fallback
 
 **Role**: Implements scientific Python code with strict TDD
 
@@ -183,7 +206,7 @@ Explanation of what was found
 
 ### Sci-Review (Review Agent)
 
-**Model**: GPT-5.4
+**Model**: Claude Opus 4.6 with GPT-5.4 fallback
 
 **Role**: Validates scientific correctness and code quality
 
@@ -200,7 +223,7 @@ Explanation of what was found
 
 ### Sci-Debug (Approval-Gated Debugger)
 
-**Model**: GPT-5.4
+**Model**: Claude Opus 4.6 with GPT-5.4 fallback
 
 **Role**: Systematic debugging and error resolution in scientific Python with explicit user approval checkpoints
 
@@ -239,7 +262,7 @@ This started after we changed the lengthscale network initialization.
 
 ### Sci-Debug-Auto (Autonomous Remediation Agent)
 
-**Model**: GPT-5.4
+**Model**: Claude Opus 4.6 with GPT-5.4 fallback
 
 **Role**: Autonomous remediation of review, test, and runtime failures for conductor-driven workflows
 
@@ -257,7 +280,7 @@ This started after we changed the lengthscale network initialization.
 
 ### Sci-Docs (Documentation Agent)
 
-**Model**: Claude Sonnet 4.6
+**Model**: Claude Sonnet 4.6 with GPT-5.4 fallback
 
 **Role**: Creates and maintains formal Sphinx reST documentation for public scientific Python APIs and workflows
 
@@ -290,7 +313,7 @@ use the existing docs build workflow and fix any broken references you touch.
 
 ### Sci-Notebook (Notebook Agent)
 
-**Model**: Claude Sonnet 4.6
+**Model**: Claude Sonnet 4.6 with GPT-5.4 fallback
 
 **Role**: Creates Jupyter notebooks for exploration and documentation
 
@@ -319,7 +342,7 @@ Create a tutorial notebook demonstrating how to use our custom Gibbs kernel with
 
 ### Sci-Viz (Visualization Agent)
 
-**Model**: Claude Sonnet 4.6
+**Model**: Claude Sonnet 4.6 with GPT-5.4 fallback
 
 **Role**: Creates scientific visualizations
 
@@ -523,6 +546,8 @@ convention = "pep257"
 4. **Commit after each phase**: Incremental progress, easy rollback
 5. **Extract notebook code**: Move tested code to modules
 6. **Use Sci-Docs for formal docs**: Route API reference, narrative pages, and Sphinx validation to the docs specialist
+7. **Configure thinking effort in the model picker**: Set Opus high for planning, research, review, and debugging; keep Explore lighter unless exhaustive search is required
+8. **Enable nested subagents deliberately**: Turn on `chat.subagents.allowInvocationsFromSubagents` when you want planner or debugger chains to delegate one level deeper
 
 ### For Scientific Code
 

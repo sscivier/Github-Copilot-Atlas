@@ -4,6 +4,7 @@ This document provides concrete examples of using the Sci-Agents suite for commo
 
 ## Table of Contents
 
+- [VS Code 1.113 Setup](#vs-code-1113-setup)
 - [Example 1: Implement Custom GP Kernel](#example-1-implement-custom-gp-kernel)
 - [Example 2: Create Data Processing Pipeline](#example-2-create-data-processing-pipeline)
 - [Example 3: Exploratory Notebook](#example-3-exploratory-notebook)
@@ -11,6 +12,15 @@ This document provides concrete examples of using the Sci-Agents suite for commo
 - [Example 5: Optimization Algorithm](#example-5-optimization-algorithm)
 - [Example 6: Debug Numerical Instability](#example-6-debug-numerical-instability)
 - [Example 7: Sphinx API Documentation](#example-7-sphinx-api-documentation)
+
+## VS Code 1.113 Setup
+
+Before using the more orchestral Sci-Agent flows in VS Code 1.113:
+
+1. Set thinking effort in the model picker rather than in agent frontmatter.
+2. Use **High** effort for Claude Opus 4.6 or GPT-5.4 when running Sci-Conductor, Sci-Plan, Sci-Research, Sci-Review, Sci-Debug, or Sci-Debug-Auto on complex tasks.
+3. Keep Sci-Explore on adaptive or lower effort unless you explicitly want slower, exhaustive discovery.
+4. Enable `chat.subagents.allowInvocationsFromSubagents` if you want nested flows such as Sci-Conductor → Sci-Plan → Sci-Research or Sci-Conductor → Sci-Debug-Auto → Sci-Review.
 
 ## Example 1: Implement Custom GP Kernel
 
@@ -41,6 +51,8 @@ The neural network should be simple (2-3 hidden layers, ReLU activations).
 #### Phase 1: Planning
 
 Sci-Plan creates plan with:
+
+- **Nested discovery path**: Sci-Conductor invokes Sci-Plan for the overall plan, then Sci-Plan invokes Sci-Explore for file mapping and Sci-Research for algorithmic or library-specific tradeoffs.
 
 - **Options for lengthscale network architecture**:
   - Option A: Single shared MLP
@@ -80,6 +92,8 @@ For each phase:
 4. **Commit**:
    - User commits with generated message
    - Proceed to next phase
+
+If nested subagents are disabled, Sci-Plan should invoke Sci-Explore and Sci-Research directly from the planning layer rather than expecting them to delegate further.
 
 If the kernel becomes part of the public package surface, Sci-Conductor can insert a dedicated **Sci-Docs** phase to update Sphinx API pages, math-rich docstrings, and release-facing narrative documentation before preserve and commit.
 
@@ -568,6 +582,8 @@ It doesn't fail every run — maybe 1 in 5 times.
 
 ### Expected Workflow: Debugging Lifecycle
 
+When Sci-Debug is user-invoked, it can delegate directly. When Sci-Debug or Sci-Debug-Auto is invoked by Sci-Conductor, enable nested subagents to allow the full diagnosis → remediation → review chain below.
+
 #### Phase 0: Triage
 
 Sci-Debug collects evidence and classifies:
@@ -600,6 +616,13 @@ Run multiple times to capture a failing case. Use Hypothesis database to replay.
 - `src/package/kernels/gibbs.py::GibbsKernel.forward` — kernel computation
 - `src/package/kernels/gibbs.py::LengthscaleNN.forward` — lengthscale output
 - `src/package/kernels/gibbs.py::LengthscaleNN.__init__` — **recently changed initialization**
+
+**Nested remediation path** (Sci-Debug-Auto in conductor-driven workflows):
+
+- Sci-Conductor or the user invokes Sci-Debug-Auto with the failing review or test context
+- Sci-Debug-Auto invokes Sci-Explore to map the blast radius
+- Sci-Debug-Auto invokes Sci-Research if numerical stability guidance is needed
+- Sci-Debug-Auto invokes Sci-Implement for the fix and Sci-Review for final verification
 
 **1D. Isolate root cause:**
 
