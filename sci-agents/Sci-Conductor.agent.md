@@ -274,7 +274,8 @@ When review is warranted, use #runSubagent to invoke Sci-Review with:
 Analyze review feedback:
 
 - **If APPROVED**: Proceed to preservation step
-- **If NEEDS_REVISION**: For a tiny or small scoped issue, you may apply one direct revision yourself before escalating. Otherwise use #runSubagent to invoke Sci-Debug-Auto with the review feedback, failing tests, and phase context. Sci-Debug-Auto will diagnose the root cause, apply fixes, add regression tests, and return either a verified resolution or a concrete escalation report. Once Sci-Debug-Auto resolves the issues, re-invoke Sci-Review if review is still warranted. If Sci-Debug-Auto escalates, stop and consult the user with the unresolved findings.
+- **If APPROVED with only minor notes**: You may apply those non-behavioral fixes directly and continue without another Sci-Review pass.
+- **If NEEDS_REVISION**: Distinguish material revisions from cleanup revisions. For a tiny or small scoped issue, you may apply one direct revision yourself before escalating. If the follow-up changes are purely non-behavioral, such as wording-only doc updates, comments, or formatting, validate them directly and do not re-invoke Sci-Review. Otherwise use #runSubagent to invoke Sci-Debug-Auto with the review feedback, failing tests, and phase context. Sci-Debug-Auto will diagnose the root cause, apply fixes, add regression tests, and return either a verified resolution or a concrete escalation report. Once Sci-Debug-Auto resolves the issues, re-invoke Sci-Review only if the follow-up changed logic, tests, APIs, scientific claims, or validation outcomes. If Sci-Debug-Auto escalates, stop and consult the user with the unresolved findings.
 - **If FAILED**: Stop and consult user for guidance
 
 ### 2C. Preserve Phase Documentation

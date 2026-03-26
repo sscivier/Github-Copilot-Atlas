@@ -76,6 +76,8 @@ If the root cause is still unclear after **3 diagnosis iterations**, if the diag
 - For documentation-only failures, prefer Sci-Docs over Sci-Implement unless the root cause is actually in executable code
 - Keep the fix scoped to the reported failure unless a wider contract must be updated to avoid regression
 
+If the follow-up is only wording, comments, formatting, or other non-behavioral documentation polish, apply it directly and treat it as cleanup rather than a new implementation cycle.
+
 If the fix now requires changes across more than five files, introduces a new design choice, or no longer fits a focused remediation, escalate to Sci-Conductor instead of widening the scope autonomously.
 
 ### Phase 3: Verify
@@ -89,7 +91,7 @@ If verification would require a third fix-and-retest cycle, escalate instead of 
 
 ### Phase 4: Review and Return
 
-- For significant fixes, invoke Sci-Review before returning success. For tiny, low-risk fixes, direct verification is acceptable if you can clearly summarize what was checked.
+- For significant fixes, invoke Sci-Review before returning success. For tiny, low-risk fixes, or for follow-up changes that are purely non-behavioral, direct verification is acceptable if you can clearly summarize what was checked.
 - Return one of two outcomes to Sci-Conductor:
 
 ```markdown
