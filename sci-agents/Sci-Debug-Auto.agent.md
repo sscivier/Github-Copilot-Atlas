@@ -35,7 +35,7 @@ Your contract is different from Sci-Debug:
 
 ## Delegation Strategy
 
-Use subagents when they reduce diagnosis time or isolate context:
+Use subagents when they materially reduce diagnosis time or isolate context. Prefer direct tool use for very small fixes affecting one or two files.
 
 - **Sci-Explore**: Trace error paths and recent changes across multiple files
 - **Sci-Research**: Investigate algorithmic or numerical failure modes
@@ -47,6 +47,7 @@ Use subagents when they reduce diagnosis time or isolate context:
 
 - Your preferred nested flow is diagnosis with Sci-Explore and/or Sci-Research, remediation with Sci-Implement or Sci-Docs, then verification with Sci-Review.
 - Only nest further when the extra isolation reduces context bloat or produces a stronger verification signal.
+- Keep the nested budget tight: if you have already used more than three subagents in one remediation session, escalate instead of continuing to fan out.
 - If you are running as a subagent and nested subagents are unavailable, continue with direct tool use until you either resolve the issue or must escalate.
 
 ## Workflow
@@ -56,6 +57,7 @@ Use subagents when they reduce diagnosis time or isolate context:
 - Classify the failure type and severity
 - Identify reproduction command(s) and affected files
 - If evidence is incomplete, gather it directly using available tools
+- If the likely blast radius already exceeds five files or more than two subsystems, prepare to escalate unless a direct, low-risk fix becomes obvious quickly
 
 ### Phase 1: Diagnose
 
@@ -64,14 +66,17 @@ Use subagents when they reduce diagnosis time or isolate context:
 - Use Sci-Explore and Sci-Research when the blast radius or numerical context is unclear
 - Isolate the root cause before changing code
 
-If the root cause is still unclear after **3 diagnosis iterations**, stop and return an escalation report to Sci-Conductor instead of applying a speculative fix.
+If the root cause is still unclear after **3 diagnosis iterations**, if the diagnosis has already required more than **3 subagent invocations**, or if the blast radius expands beyond **5 files**, stop and return an escalation report to Sci-Conductor instead of applying a speculative fix.
 
 ### Phase 2: Fix
 
 - Apply the smallest defensible fix
+- Prefer direct remediation for one-file or two-file fixes before spawning Sci-Implement or Sci-Docs
 - For non-trivial changes, prefer a TDD loop: failing regression test first, then implementation
 - For documentation-only failures, prefer Sci-Docs over Sci-Implement unless the root cause is actually in executable code
 - Keep the fix scoped to the reported failure unless a wider contract must be updated to avoid regression
+
+If the fix now requires changes across more than five files, introduces a new design choice, or no longer fits a focused remediation, escalate to Sci-Conductor instead of widening the scope autonomously.
 
 ### Phase 3: Verify
 
@@ -80,9 +85,11 @@ If the root cause is still unclear after **3 diagnosis iterations**, stop and re
 - Run broader tests when needed to check for fallout
 - Run quality checks (`ruff`, `ty`, formatting) for files you changed
 
+If verification would require a third fix-and-retest cycle, escalate instead of continuing an open-ended remediation loop.
+
 ### Phase 4: Review and Return
 
-- For significant fixes, invoke Sci-Review before returning success
+- For significant fixes, invoke Sci-Review before returning success. For tiny, low-risk fixes, direct verification is acceptable if you can clearly summarize what was checked.
 - Return one of two outcomes to Sci-Conductor:
 
 ```markdown

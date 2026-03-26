@@ -24,23 +24,26 @@ You must actively manage your context window by delegating research tasks:
 
 **When to Delegate:**
 
-- Task requires exploring >10 files → Sci-Explore
-- Need deep scientific context for >3 subsystems → Multiple Sci-Research
-- Heavy file reading for algorithm understanding → Sci-Research
-- Complex dependency mapping → Sci-Explore
+- Task requires mapping >12 files or unfamiliar structure → Sci-Explore
+- Need deep scientific context for unfamiliar numerical work or more than two subsystems → Sci-Research
+- Heavy file reading remains ambiguous after a direct pass → Sci-Research
+- Complex dependency mapping that you cannot scope directly → Sci-Explore
 
 **When to Handle Directly:**
 
 - Simple research requiring <5 file reads
+- Single-domain or familiar tasks affecting fewer than 10 files
+- Same-session follow-ups where relevant discovery already exists
 - Writing the actual plan document (your core responsibility)
 - High-level architecture decisions
 - Synthesizing findings from subagents
 
 **Multi-Subagent Strategy:**
 
-- Invoke Sci-Explore first for file discovery (especially >10 potential files)
-- Then invoke multiple Sci-Research in parallel for independent subsystems
-- Example: "Invoke Sci-Explore for mapping, then 3 Sci-Research for models/data/testing"
+- Do not invoke Sci-Explore first by default; start with direct scoping and only delegate when the file set is still unclear
+- Use at most two parallel Sci-Research calls by default; use a third only for clearly independent high-risk domains
+- Reuse existing mapping from the current task session instead of rediscovering the same area
+- Example: "Do a quick direct scan, invoke Sci-Explore only if the target area is still unclear, then invoke one or two Sci-Research calls for the hardest domains"
 - Collect all findings before writing the plan
 
 **Available Subagents:**
@@ -52,7 +55,7 @@ Use #runSubagent invoke to delegate research tasks.
 
 ## Nested Subagent Policy
 
-- Your default decomposition is Sci-Plan → Sci-Explore for file mapping, then Sci-Plan → Sci-Research for deep analysis.
+- Your default decomposition is to decide whether lightweight direct planning is sufficient; if not, use Sci-Plan → Sci-Explore for file mapping and Sci-Plan → Sci-Research for the deepest analysis.
 - Allow Sci-Research to spawn Sci-Explore only when additional file discovery is required and you cannot scope it directly.
 - Do not create recursive planning chains and do not delegate plan writing.
 - If nested subagents are unavailable, invoke Sci-Explore and Sci-Research directly from Sci-Plan and continue.
@@ -84,26 +87,28 @@ Use #runSubagent invoke to delegate research tasks.
 
 #### 1B. Explore the Codebase (Delegate Heavy Lifting with Parallel Execution)
 
-**If task touches >5 files or multiple subsystems:**
+**If task touches >10 files, spans unfamiliar subsystems, or the likely files are still unclear after a quick direct pass:**
 
 - Use #runSubagent invoke Sci-Explore for fast discovery
 - Or invoke multiple Sci-Explore instances in parallel for different areas
 - Let it map relevant files/patterns/dependencies
 - Use its findings to avoid loading unnecessary context
 
-**Simple tasks (<5 files):**
+**Simple or familiar tasks (<10 files):**
 
 - Use semantic search/symbol search yourself
+- Reuse discovery from the current task session instead of re-invoking Sci-Explore
 
 #### 1C. Research Scientific Context (Parallel & Context-Aware)
 
 **For single-domain tasks:**
 
-- Use #runSubagent invoke Sci-Research
+- Start with lightweight direct research yourself
+- Use #runSubagent invoke Sci-Research only if the domain is unfamiliar, numerically sensitive, or still ambiguous after that pass
 
 **For multi-domain tasks (e.g., models + data + viz):**
 
-- Invoke Sci-Research multiple times in parallel (one per domain)
+- Invoke Sci-Research multiple times in parallel only for truly independent domains, usually no more than two at once
 - Example: Research models, data processing, testing strategies independently
 
 **For very large research:**
@@ -128,6 +133,12 @@ Use #runSubagent invoke to delegate research tasks.
 
 #### 1E. Stop at 90% Confidence
 
+Match confidence depth to task risk instead of forcing exhaustive research every time:
+
+- **70% confidence** is sufficient for low-risk bug fixes, doc tasks, familiar optimizations, and other small scoped work
+- **80% confidence** is sufficient for medium tasks in familiar codebases
+- **90% confidence** is reserved for novel algorithms, numerically sensitive work, or public API changes
+
 You have enough context when you can answer:
 
 - What files/functions need to change?
@@ -135,6 +146,8 @@ You have enough context when you can answer:
 - What are implementation options and tradeoffs?
 - What tests are needed (including edge cases)?
 - What are the risks/unknowns?
+
+Return once you have enough to unblock implementation or plan approval. Do not spend extra context chasing marginal certainty for familiar work.
 
 ### Phase 2: Draft Comprehensive Plan
 

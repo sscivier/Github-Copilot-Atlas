@@ -29,6 +29,26 @@ VS Code 1.113 adds two capabilities that directly affect this suite:
 
 If nested subagents are disabled, these agents are expected to continue with their own tools instead of blocking the workflow.
 
+### Recommended Cost-Aware Routing
+
+The full planning and stress-test lifecycle is intended for medium and large scientific work, not every edit. Use the lightest route that still matches the task risk.
+
+| Task class | Typical shape | Recommended route | When to escalate |
+| ---------- | ------------- | ----------------- | ---------------- |
+| Tiny | Single file, obvious change, about 20 lines or less | Start with `Sci-Conductor` or the single specialist you already know you need | Escalate if ambiguity, scientific risk, or wider blast radius appears |
+| Small | One to three files, tens of lines, single subsystem, familiar pattern | `Sci-Conductor → one specialist` such as `Sci-Implement` or `Sci-Docs` | Escalate if design tradeoffs or validation needs become non-trivial |
+| Medium | Four to ten files, some ambiguity, logic changes, public API or test implications | `Sci-Conductor → Sci-Plan`, with optional `Sci-Explore` or `Sci-Research` | Escalate to full nested flow when file discovery or scientific context is still unclear |
+| Large / High-Risk | More than ten files, multiple subsystems, novel algorithm, numerically sensitive work, or broad debugging | Full orchestration with planning, targeted research, review, and preservation | Keep the full flow; this is what the suite is optimized for |
+
+### Direct Specialist Entry Points
+
+Use a specialist directly when the task is already narrowly scoped and you do not need orchestration overhead:
+
+- `Sci-Implement`: Small code changes, tests, refactors, or bug fixes in a known area
+- `Sci-Docs`: Docstrings, Sphinx pages, API reference updates, and documentation-only validation
+- `Sci-Notebook`: Exploratory notebooks and lightweight demonstrations
+- `Sci-Viz`: Plotting functions, figure cleanup, and visualization-specific work
+
 ### Agent Roster
 
 1. **Sci-Conductor**: Orchestrator managing the full development lifecycle
@@ -50,6 +70,8 @@ If nested subagents are disabled, these agents are expected to continue with the
 ```text
 Planning → Stress-Test → Implementation → Review / Debug → Preserve → Commit
 ```
+
+For tiny and small tasks, this can be abbreviated to a lighter route such as `Sci-Conductor → Sci-Implement`, `Sci-Conductor → Sci-Docs`, or direct specialist usage. Use the full lifecycle when the task is ambiguous, broad, or scientifically risky.
 
 **Key Stages:**
 

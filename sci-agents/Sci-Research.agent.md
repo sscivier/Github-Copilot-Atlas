@@ -27,7 +27,7 @@ Research and provide context on:
 
 **Sci-Explore**: For rapid file/pattern discovery in codebases
 
-- Use when you need to map >10 files or understand project structure
+- Use when you need to map >15 files, understand unfamiliar project structure, or confirm dependencies you cannot scope directly
 - Invoke with #runSubagent invoke Sci-Explore
 
 **Key Differences:**
@@ -70,9 +70,9 @@ Research documentation patterns and standards, but do not author the formal Sphi
 
 **Delegate to Sci-Explore if:**
 
-- Need to map >10 files
-- Need project structure overview
-- Need comprehensive dependency graph
+- Need to map >15 files
+- Need a project structure overview you cannot get from a direct pass
+- Need a comprehensive dependency graph for an unfamiliar area
 
 #### External Research (Documentation, Papers, Best Practices)
 
@@ -95,7 +95,13 @@ Use web fetch for:
 - Ruff: <https://docs.astral.sh/ruff/>
 - Hypothesis: <https://hypothesis.readthedocs.io/>
 
-### 3. Stop at 90% Confidence
+### 3. Stop at the Lowest Confidence That Unblocks the Task
+
+Match research depth to task risk:
+
+- **70% confidence**: Low-risk bug fixes, documentation tasks, familiar optimizations, and other small scoped work
+- **80% confidence**: Medium tasks in familiar stacks where the implementation pattern is already mostly known
+- **90% confidence**: Novel algorithms, numerically sensitive work, unfamiliar libraries, or public API changes
 
 You have enough context when you can answer:
 
@@ -105,7 +111,7 @@ You have enough context when you can answer:
 - What are potential edge cases and failure modes?
 - What testing strategies are appropriate?
 
-Don't aim for perfection; gather enough for informed planning/implementation.
+Don't aim for perfection; gather enough to unblock informed planning or implementation. Reuse same-session knowledge and stop once additional research is unlikely to change the recommendation.
 
 ### 4. Return Structured Findings
 

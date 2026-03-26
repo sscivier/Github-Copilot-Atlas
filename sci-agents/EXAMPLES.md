@@ -5,6 +5,7 @@ This document provides concrete examples of using the Sci-Agents suite for commo
 ## Table of Contents
 
 - [VS Code 1.113 Setup](#vs-code-1113-setup)
+- [Example 0: Small Scoped Change](#example-0-small-scoped-change)
 - [Example 1: Implement Custom GP Kernel](#example-1-implement-custom-gp-kernel)
 - [Example 2: Create Data Processing Pipeline](#example-2-create-data-processing-pipeline)
 - [Example 3: Exploratory Notebook](#example-3-exploratory-notebook)
@@ -21,6 +22,45 @@ Before using the more orchestral Sci-Agent flows in VS Code 1.113:
 2. Use **High** effort for Claude Opus 4.6 or GPT-5.4 when running Sci-Conductor, Sci-Plan, Sci-Research, Sci-Review, Sci-Debug, or Sci-Debug-Auto on complex tasks.
 3. Keep Sci-Explore on adaptive or lower effort unless you explicitly want slower, exhaustive discovery.
 4. Enable `chat.subagents.allowInvocationsFromSubagents` if you want nested flows such as Sci-Conductor → Sci-Plan → Sci-Research or Sci-Conductor → Sci-Debug-Auto → Sci-Review.
+5. For tiny or small tasks, start with `Sci-Conductor` or a single specialist directly instead of defaulting to the full nested planning flow.
+
+## Example 0: Small Scoped Change
+
+### Small-Change Scenario
+
+You already know the task is narrow: a small bug fix, a unit test addition, or a documentation update in one part of the codebase.
+
+### Small-Fix Request
+
+```text
+@Sci-Conductor
+
+Add a regression test for `normalize_velocity_field()` so it rejects NaN inputs.
+The target tests live in `tests/unit/test_preprocessing.py`.
+Keep the change minimal.
+```
+
+### Small-Fix Workflow
+
+- Sci-Conductor skips heavy clarification because the file and intent are already clear.
+- Sci-Conductor uses a lightweight plan in chat instead of invoking Sci-Plan.
+- Sci-Conductor delegates directly to `Sci-Implement` for the test and minimal code fix, or handles the change directly if it is obviously tiny.
+- Review stays focused: direct verification may be enough for a single low-risk test-only change, while logic changes can still go to `Sci-Review`.
+
+### Docs-Only Request
+
+```text
+@Sci-Docs
+
+Update the public docstring for `GibbsKernel` to document lengthscale bounds and GPU-ready behavior.
+Do not change implementation code.
+```
+
+### Docs-Only Workflow
+
+- Start with `Sci-Docs` directly.
+- Skip `Sci-Plan`, `Sci-Explore`, and `Sci-Research` unless the documentation scope turns out to be broader than expected.
+- Validate only the relevant documentation outputs or checks.
 
 ## Example 1: Implement Custom GP Kernel
 
@@ -47,6 +87,8 @@ The neural network should be simple (2-3 hidden layers, ReLU activations).
 ```
 
 ### Expected Workflow: Gibbs Kernel
+
+This is a good candidate for the full orchestration path because it introduces a new kernel, numerical-stability concerns, and non-trivial test design.
 
 #### Phase 1: Planning
 

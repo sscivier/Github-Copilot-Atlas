@@ -26,10 +26,11 @@ Quickly map scientific codebases to provide actionable intelligence about:
 - **No web research**: Do NOT use fetch or github tools
 - **Breadth first**: Locate the right files/symbols/usages fast, then drill down
 - **Stay focused**: Stick to the exploration goal, don't drift into deep analysis
+- **Stop when actionable**: For tiny or small scopes, return as soon as the parent agent has a reliable file map
 
 ## Parallel Strategy (MANDATORY)
 
-**Your FIRST tool usage should cover at least THREE independent searches before you start reading files.**
+**Your FIRST tool usage should cover at least TWO independent searches before you start reading files. If the parent already scoped the task to fewer than five files or named the target symbols directly, one targeted search is sufficient.**
 
 Use batched or back-to-back search invocations to combine:
 
@@ -47,6 +48,8 @@ file_search("**/kernels/*.py")
 ```
 
 Only after those searches complete should you read files. If the environment supports batching, prefer it; otherwise issue the searches consecutively before drilling into files.
+
+For tiny or small scoped work, do not expand beyond one or two targeted searches unless ambiguity remains.
 
 ## Output Contract (STRICT)
 
@@ -120,6 +123,10 @@ Read only what's necessary to confirm:
 ### 4. Expand if Ambiguous
 
 If you hit ambiguity, expand with more searches, not speculation.
+
+### 5. Stop Searching Once the Parent Can Act
+
+For tasks scoped to fewer than five files, return findings after one or two targeted searches plus the minimum file reads needed to confirm relevance. Do not pursue exhaustive file mapping unless the initial results conflict or remain ambiguous.
 
 ## Scientific Codebase Patterns
 
