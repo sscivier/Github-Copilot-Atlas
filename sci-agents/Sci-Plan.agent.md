@@ -2,7 +2,7 @@
 description: 'Autonomous planning agent for scientific Python projects with options, tradeoffs, and stress-testing'
 tools: ['edit', 'search/codebase', 'search/fileSearch', 'search/textSearch', 'search/usages', 'read/readFile', 'read/problems', 'search/changes', 'execute/testFailure', 'web/fetch', 'web/githubRepo', 'agent']
 agents: ['Sci-Explore', 'Sci-Research']
-model: ['Claude Opus 4.6 (copilot)', 'GPT-5.4 (copilot)']
+model: ['GPT-5.4 (copilot)', 'Claude Sonnet 4.6 (copilot)']
 handoffs:
   - label: Start implementation with Sci-Conductor
     agent: Sci-Conductor

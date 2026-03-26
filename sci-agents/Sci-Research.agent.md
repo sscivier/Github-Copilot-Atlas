@@ -3,7 +3,7 @@ description: 'Research scientific context, algorithms, libraries, and best pract
 argument-hint: Research goal or scientific question
 tools: ['search/codebase', 'search/fileSearch', 'search/textSearch', 'search/usages', 'read/readFile', 'read/problems', 'search/changes', 'execute/testFailure', 'web/fetch', 'agent']
 agents: ['Sci-Explore']
-model: ['Claude Opus 4.6 (copilot)', 'GPT-5.4 (copilot)']
+model: ['GPT-5.4 (copilot)', 'Claude Sonnet 4.6 (copilot)']
 user-invocable: false
 disable-model-invocation: true
 ---

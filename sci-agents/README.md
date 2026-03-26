@@ -13,11 +13,17 @@ VS Code 1.113 adds two capabilities that directly affect this suite:
 - **Configurable thinking effort** is set in the VS Code model picker, not in `.agent.md` frontmatter.
 - **Nested subagents** allow a delegated agent to invoke another delegated agent, but only when `chat.subagents.allowInvocationsFromSubagents` is enabled.
 
+### Observed Subagent Model Limitation
+
+As of March 2026, custom subagents in VS Code appear unable to escalate above the parent session's premium model tier. In practice, a `GPT-5.4` or `Claude Sonnet 4.6` parent session can apply subagent-specific tools and instructions, but subagents that request `Claude Opus 4.6` resolve to a 1x model instead of dispatching Opus.
+
+Until that behavior changes, the reasoning-first Sci agents below standardize on `GPT-5.4` with `Claude Sonnet 4.6` fallback so direct use and delegated use stay consistent.
+
 ### Recommended Reasoning Tiers
 
 | Tier | Agents | Default model preference | Recommended thinking effort |
 | ---- | ------ | ------------------------ | --------------------------- |
-| Reasoning-first | Sci-Conductor, Sci-Plan, Sci-Research, Sci-Review, Sci-Debug, Sci-Debug-Auto | GPT-5.4 for Sci-Conductor; Claude Opus 4.6 → GPT-5.4 fallback for the others | High for architectural planning, scientific analysis, review, and debugging |
+| Reasoning-first | Sci-Conductor, Sci-Plan, Sci-Research, Sci-Review, Sci-Debug, Sci-Debug-Auto | GPT-5.4 → Claude Sonnet 4.6 fallback | High for architectural planning, scientific analysis, review, and debugging |
 | Discovery-first | Sci-Explore | GPT-5.4 → Claude Sonnet 4.6 fallback | Adaptive or low unless codebase discovery must be exhaustive |
 | Execution-first | Sci-Implement, Sci-Docs, Sci-Notebook, Sci-Viz | Claude Sonnet 4.6 → GPT-5.4 fallback | Adaptive or medium; raise only for unusually complex tasks |
 
@@ -108,7 +114,7 @@ Format: `plans/<task>/phase-<N>-preserve.md`
 
 ### Sci-Conductor (Orchestrator)
 
-**Model**: GPT-5.4 with Claude Opus 4.6 fallback
+**Model**: GPT-5.4 with Claude Sonnet 4.6 fallback
 
 **Role**: Manages the full development lifecycle, coordinates all subagents
 
@@ -131,7 +137,7 @@ I need to implement a new Gaussian process kernel with spatially-varying lengths
 
 ### Sci-Plan (Planning Agent)
 
-**Model**: Claude Opus 4.6 with GPT-5.4 fallback
+**Model**: GPT-5.4 with Claude Sonnet 4.6 fallback
 
 **Role**: Creates comprehensive implementation plans with options and tradeoffs
 
@@ -153,7 +159,7 @@ I need to implement a new Gaussian process kernel with spatially-varying lengths
 
 ### Sci-Research (Research Agent)
 
-**Model**: Claude Opus 4.6 with GPT-5.4 fallback
+**Model**: GPT-5.4 with Claude Sonnet 4.6 fallback
 
 **Role**: Gathers scientific context, algorithm details, best practices
 
@@ -228,7 +234,7 @@ Explanation of what was found
 
 ### Sci-Review (Review Agent)
 
-**Model**: Claude Opus 4.6 with GPT-5.4 fallback
+**Model**: GPT-5.4 with Claude Sonnet 4.6 fallback
 
 **Role**: Validates scientific correctness and code quality
 
@@ -245,7 +251,7 @@ Explanation of what was found
 
 ### Sci-Debug (Approval-Gated Debugger)
 
-**Model**: Claude Opus 4.6 with GPT-5.4 fallback
+**Model**: GPT-5.4 with Claude Sonnet 4.6 fallback
 
 **Role**: Systematic debugging and error resolution in scientific Python with explicit user approval checkpoints
 
@@ -284,7 +290,7 @@ This started after we changed the lengthscale network initialization.
 
 ### Sci-Debug-Auto (Autonomous Remediation Agent)
 
-**Model**: Claude Opus 4.6 with GPT-5.4 fallback
+**Model**: GPT-5.4 with Claude Sonnet 4.6 fallback
 
 **Role**: Autonomous remediation of review, test, and runtime failures for conductor-driven workflows
 
@@ -568,7 +574,7 @@ convention = "pep257"
 4. **Commit after each phase**: Incremental progress, easy rollback
 5. **Extract notebook code**: Move tested code to modules
 6. **Use Sci-Docs for formal docs**: Route API reference, narrative pages, and Sphinx validation to the docs specialist
-7. **Configure thinking effort in the model picker**: Set Opus high for planning, research, review, and debugging; keep Explore lighter unless exhaustive search is required
+7. **Configure thinking effort in the model picker**: Set GPT-5.4 high for planning, research, review, and debugging; if Sonnet is active, use medium or high depending on task complexity; keep Explore lighter unless exhaustive search is required
 8. **Enable nested subagents deliberately**: Turn on `chat.subagents.allowInvocationsFromSubagents` when you want planner or debugger chains to delegate one level deeper
 
 ### For Scientific Code

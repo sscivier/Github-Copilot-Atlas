@@ -19,7 +19,7 @@ This document provides concrete examples of using the Sci-Agents suite for commo
 Before using the more orchestral Sci-Agent flows in VS Code 1.113:
 
 1. Set thinking effort in the model picker rather than in agent frontmatter.
-2. Use **High** effort for Claude Opus 4.6 or GPT-5.4 when running Sci-Conductor, Sci-Plan, Sci-Research, Sci-Review, Sci-Debug, or Sci-Debug-Auto on complex tasks.
+2. Use **High** effort for GPT-5.4, or **Medium/High** for Claude Sonnet 4.6, when running Sci-Conductor, Sci-Plan, Sci-Research, Sci-Review, Sci-Debug, or Sci-Debug-Auto on complex tasks.
 3. Keep Sci-Explore on adaptive or lower effort unless you explicitly want slower, exhaustive discovery.
 4. Enable `chat.subagents.allowInvocationsFromSubagents` if you want nested flows such as Sci-Conductor → Sci-Plan → Sci-Research or Sci-Conductor → Sci-Debug-Auto → Sci-Review.
 5. For tiny or small tasks, start with `Sci-Conductor` or a single specialist directly instead of defaulting to the full nested planning flow.
