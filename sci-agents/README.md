@@ -41,10 +41,12 @@ The full planning and stress-test lifecycle is intended for medium and large sci
 
 | Task class | Typical shape | Recommended route | When to escalate |
 | ---------- | ------------- | ----------------- | ---------------- |
-| Tiny | Single file, obvious change, about 20 lines or less | Start with `Sci-Conductor` or the single specialist you already know you need | Escalate if ambiguity, scientific risk, or wider blast radius appears |
-| Small | One to three files, tens of lines, single subsystem, familiar pattern | `Sci-Conductor → one specialist` such as `Sci-Implement` or `Sci-Docs` | Escalate if design tradeoffs or validation needs become non-trivial |
-| Medium | Four to ten files, some ambiguity, logic changes, public API or test implications | `Sci-Conductor → Sci-Plan`, with optional `Sci-Explore` or `Sci-Research` | Escalate to full nested flow when file discovery or scientific context is still unclear |
+| Tiny | Single file, obvious micro-change, about 10 lines or less | Start with `Sci-Conductor` only for true micro-cleanups, otherwise use the single specialist you already know you need | Escalate if ambiguity, scientific risk, or wider blast radius appears |
+| Small | One to four files, tens of lines, single subsystem, familiar pattern | Prefer `Sci-Conductor → one specialist` such as `Sci-Implement` or `Sci-Docs` | Escalate if design tradeoffs or validation needs become non-trivial |
+| Medium | Four to eight files, some ambiguity, logic changes, public API or test implications | `Sci-Conductor → Sci-Plan`, with optional `Sci-Explore` or `Sci-Research` | Escalate to full nested flow when file discovery or scientific context is still unclear |
 | Large / High-Risk | More than ten files, multiple subsystems, novel algorithm, numerically sensitive work, or broad debugging | Full orchestration with planning, targeted research, review, and preservation | Keep the full flow; this is what the suite is optimized for |
+
+Default bias: if a task will likely result in real code changes, prefer one execution specialist earlier rather than editing directly in Sci-Conductor. Keep direct-in-conductor work for orchestration, micro-cleanups, and fast validation.
 
 ### Direct Specialist Entry Points
 
@@ -77,7 +79,7 @@ Use a specialist directly when the task is already narrowly scoped and you do no
 Planning → Stress-Test → Implementation → Review / Debug → Preserve → Commit
 ```
 
-For tiny and small tasks, this can be abbreviated to a lighter route such as `Sci-Conductor → Sci-Implement`, `Sci-Conductor → Sci-Docs`, or direct specialist usage. Use the full lifecycle when the task is ambiguous, broad, or scientifically risky.
+For tiny and small tasks, this can be abbreviated to a lighter route such as `Sci-Conductor → Sci-Implement`, `Sci-Conductor → Sci-Docs`, or direct specialist usage. The intended default is now to reach an execution specialist earlier for small implementation work, while keeping only true micro-cleanups inside Sci-Conductor. Use the full lifecycle when the task is ambiguous, broad, or scientifically risky.
 
 **Key Stages:**
 

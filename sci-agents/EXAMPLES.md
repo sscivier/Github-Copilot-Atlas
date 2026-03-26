@@ -23,6 +23,7 @@ Before using the more orchestral Sci-Agent flows in VS Code 1.113:
 3. Keep Sci-Explore on adaptive or lower effort unless you explicitly want slower, exhaustive discovery.
 4. Enable `chat.subagents.allowInvocationsFromSubagents` if you want nested flows such as Sci-Conductor → Sci-Plan → Sci-Research or Sci-Conductor → Sci-Debug-Auto → Sci-Review.
 5. For tiny or small tasks, start with `Sci-Conductor` or a single specialist directly instead of defaulting to the full nested planning flow.
+6. If the task will likely modify real code, bias toward `Sci-Implement` or another execution specialist earlier; reserve direct Sci-Conductor edits for true micro-cleanups.
 
 ## Example 0: Small Scoped Change
 
@@ -44,7 +45,7 @@ Keep the change minimal.
 
 - Sci-Conductor skips heavy clarification because the file and intent are already clear.
 - Sci-Conductor uses a lightweight plan in chat instead of invoking Sci-Plan.
-- Sci-Conductor delegates directly to `Sci-Implement` for the test and minimal code fix, or handles the change directly if it is obviously tiny.
+- Sci-Conductor delegates directly to `Sci-Implement` for the test and minimal code fix. Direct handling in Sci-Conductor is reserved for truly tiny cleanups.
 - Review stays focused: direct verification may be enough for a single low-risk test-only change, while logic changes can still go to `Sci-Review`.
 
 ### Docs-Only Request

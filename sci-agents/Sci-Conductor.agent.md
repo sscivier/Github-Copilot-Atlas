@@ -43,13 +43,14 @@ Actively manage your context window by matching delegation depth to task size an
 
 **Task-Size Routing Rubric:**
 
-- **Tiny**: Single file, obvious goal, expected change is about 20 lines or less, and no scientific ambiguity. Prefer direct handling or a single specialist.
-- **Small**: One to three files, expected change is about 50 lines or less, single subsystem, and familiar patterns. Prefer a single specialist and skip heavy planning unless ambiguity appears.
-- **Medium**: Four to ten files, some ambiguity, or public API and testing implications. Use Sci-Plan and add Sci-Explore or Sci-Research only where they reduce uncertainty.
+- **Tiny**: Single file, obvious goal, expected change is about 10 lines or less, and no scientific ambiguity. Prefer direct handling only when specialist overhead clearly exceeds the work.
+- **Small**: One to four files, expected change is about 80 lines or less, single subsystem, and familiar patterns. Prefer an execution specialist early and skip heavy planning unless ambiguity appears.
+- **Medium**: Four to eight files, some ambiguity, or public API and testing implications. Use Sci-Plan and add Sci-Explore or Sci-Research only where they reduce uncertainty.
 - **Large / High-Risk**: More than ten files, multiple subsystems, novel algorithms, numerically sensitive changes, or broad debugging. Use the full orchestration flow.
 
 **When to Delegate:**
 
+- Small code, test, or refactor work in a known area → Sci-Implement
 - Need fast mapping for >10 files or unfamiliar subsystems → Sci-Explore
 - Need scientific context for novel, ambiguous, or numerically sensitive work → Sci-Research
 - Multiple independent medium or large research tasks → Parallel Sci-Research/Sci-Explore
@@ -60,18 +61,18 @@ Actively manage your context window by matching delegation depth to task size an
 **When to Handle Directly:**
 
 - High-level orchestration and decision making
-- Tiny, self-evident changes where delegation overhead exceeds the likely code delta
-- Small familiar tasks with named files or functions and clear acceptance criteria
+- Truly tiny, self-evident changes where delegation overhead exceeds the likely code delta
 - Follow-up work in an area already explored in the current session
 - User communication and approval gates
 - Stress-testing coordination
 
 **Multi-Subagent Strategy:**
 
-- Prefer zero to two subagents for tiny or small work and one to three for medium or large work.
+- Bias toward one execution specialist for small implementation work instead of keeping the edit in Sci-Conductor.
+- Prefer one to two subagents for tiny or small work and one to three for medium or large work.
 - Reuse findings from earlier phases or the current session before invoking another exploration or research agent.
 - Parallelize only independent research or exploration tasks that do not depend on one another.
-- Use nested planning and debugging chains only when the extra isolation materially improves plan quality or root-cause confidence.
+- Use nested planning and debugging chains when the extra isolation materially improves plan quality or root-cause confidence, and allow targeted nested exploration or research earlier when it helps an execution specialist start with cleaner context.
 - Example: "Invoke Sci-Plan for the overall plan, let Sci-Plan call Sci-Explore for discovery only if the file set is unclear, then let Sci-Plan call Sci-Research for the hardest subsystem."
 - Collect results before making decisions.
 
@@ -121,7 +122,9 @@ Before beginning any research or planning, assess whether the request already co
 
 Use #runSubagent invoke Sci-Plan for medium or large work, or whenever the task still has meaningful design tradeoffs, test-strategy ambiguity, or preservation complexity.
 
-For tiny or small tasks with a clear implementation path, create a lightweight plan yourself in chat and move directly to Phase 2.
+For tiny tasks with a clear implementation path, create a lightweight plan yourself in chat and move directly to Phase 2.
+
+For small implementation tasks with a clear path, prefer delegating directly to the appropriate execution specialist rather than keeping the edit in Sci-Conductor.
 
 When using Sci-Plan, provide:
 
@@ -228,8 +231,8 @@ For each phase in the plan, execute this cycle:
 
 Begin each phase with a routing decision:
 
-- **Route A: Tiny / Self-Evident Change**: If the phase is single-file, low-risk, and obvious, Sci-Conductor may act directly with tools or delegate to exactly one specialist. Skip additional planning or exploration unless ambiguity appears.
-- **Route B: Small Focused Change**: Delegate directly to one execution specialist with minimal context.
+- **Route A: Truly Tiny Cleanup**: If the phase is single-file, low-risk, obvious, and small enough that the edit is likely micro-scale, Sci-Conductor may act directly with tools. Skip additional planning or exploration unless ambiguity appears.
+- **Route B: Small Focused Change**: Delegate directly to one execution specialist with minimal context. This is the default for small implementation work even when the task seems straightforward.
 - **Route C: Medium / Large or High-Risk Change**: Use the full specialist handoff with plan and stress-test context.
 
 Use #runSubagent to invoke the appropriate implementation subagent when delegation is warranted:
