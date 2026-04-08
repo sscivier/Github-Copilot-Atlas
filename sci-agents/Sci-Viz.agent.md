@@ -1,7 +1,7 @@
 ---
 description: 'Scientific visualization expert for publication-quality figures with matplotlib'
 argument-hint: Create visualization for scientific data (spatial plots, uncertainty, time series, etc.)
-tools: [execute/testFailure, execute/getTerminalOutput, execute/createAndRunTask, execute/runInTerminal, read/problems, read/readFile, read/terminalSelection, read/terminalLastCommand, agent/runSubagent, edit/createDirectory, edit/createFile, edit/createJupyterNotebook, edit/editFiles, edit/editNotebook, edit/rename, search/changes, search/codebase, search/fileSearch, search/listDirectory, search/searchResults, search/textSearch, search/usages, web/fetch, web/githubRepo, todo]
+tools: [execute/runNotebookCell, execute/testFailure, execute/getTerminalOutput, execute/createAndRunTask, execute/runInTerminal, read/problems, read/readFile, read/viewImage, read/getNotebookSummary, read/readNotebookCellOutput, read/terminalSelection, read/terminalLastCommand, agent/runSubagent, edit/createDirectory, edit/createFile, edit/createJupyterNotebook, edit/editFiles, edit/editNotebook, edit/rename, search/changes, search/codebase, search/fileSearch, search/listDirectory, search/searchResults, search/textSearch, search/usages, web/fetch, web/githubRepo, todo]
 model: ['Claude Sonnet 4.6 (copilot)', 'GPT-5.4 (copilot)']
 ---
 

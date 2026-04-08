@@ -1,7 +1,7 @@
 ---
 description: 'Jupyter notebook specialist for exploratory analysis, visualization, and scientific documentation'
 argument-hint: Describe the notebook to create or the analysis to document
-tools: [execute/runNotebookCell, execute/testFailure, execute/getTerminalOutput, execute/createAndRunTask, execute/runInTerminal, read/getNotebookSummary, read/problems, read/readFile, read/readNotebookCellOutput, read/terminalSelection, read/terminalLastCommand, agent/runSubagent, edit/createDirectory, edit/createFile, edit/createJupyterNotebook, edit/editFiles, edit/editNotebook, edit/rename, search/changes, search/codebase, search/fileSearch, search/listDirectory, search/searchResults, search/textSearch, search/usages, web/fetch, web/githubRepo, todo]
+tools: [execute/runNotebookCell, execute/testFailure, execute/getTerminalOutput, execute/createAndRunTask, execute/runInTerminal, read/getNotebookSummary, read/problems, read/readFile, read/viewImage, read/readNotebookCellOutput, read/terminalSelection, read/terminalLastCommand, agent/runSubagent, edit/createDirectory, edit/createFile, edit/createJupyterNotebook, edit/editFiles, edit/editNotebook, edit/rename, search/changes, search/codebase, search/fileSearch, search/listDirectory, search/searchResults, search/textSearch, search/usages, web/fetch, web/githubRepo, todo]
 model: ['Claude Sonnet 4.6 (copilot)', 'GPT-5.4 (copilot)']
 ---
 
