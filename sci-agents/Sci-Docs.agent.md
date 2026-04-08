@@ -1,7 +1,7 @@
 ---
 description: 'Sphinx reST documentation specialist for Python APIs, narrative docs, and docs validation'
 argument-hint: Describe the Python package, API surface, or Sphinx documentation task
-tools: ['edit', 'search', 'execute/getTerminalOutput', 'execute/runInTerminal', 'read/readFile', 'read/terminalLastCommand', 'read/terminalSelection', 'execute/createAndRunTask', 'search/usages', 'read/problems', 'search/changes', 'execute/testFailure', 'web/fetch', 'web/githubRepo', 'todo', 'agent']
+tools: [execute/testFailure, execute/getTerminalOutput, execute/createAndRunTask, execute/runInTerminal, read/problems, read/readFile, read/terminalSelection, read/terminalLastCommand, agent/runSubagent, edit/createDirectory, edit/createFile, edit/createJupyterNotebook, edit/editFiles, edit/editNotebook, edit/rename, search/changes, search/codebase, search/fileSearch, search/listDirectory, search/searchResults, search/textSearch, search/usages, web/fetch, web/githubRepo, todo]
 model: ['Claude Sonnet 4.6 (copilot)', 'GPT-5.4 (copilot)']
 ---
 

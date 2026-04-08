@@ -1,7 +1,7 @@
 ---
 description: 'Review scientific Python code for correctness, reproducibility, and quality'
 argument-hint: Describe the implementation or changes to review
-tools: ['search/codebase', 'search/fileSearch', 'search/textSearch', 'search/usages', 'read/readFile', 'read/problems', 'search/changes', 'execute/createAndRunTask', 'execute/getTerminalOutput', 'execute/runInTerminal', 'execute/testFailure']
+tools: [execute/testFailure, execute/getTerminalOutput, execute/createAndRunTask, execute/runInTerminal, read/problems, read/readFile, search/changes, search/codebase, search/fileSearch, search/textSearch, search/usages]
 agents: []
 model: ['GPT-5.4 (copilot)', 'Claude Sonnet 4.6 (copilot)']
 ---

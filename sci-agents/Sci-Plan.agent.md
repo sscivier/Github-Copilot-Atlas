@@ -1,6 +1,6 @@
 ---
 description: 'Autonomous planning agent for scientific Python projects with options, tradeoffs, and stress-testing'
-tools: ['edit', 'search/codebase', 'search/fileSearch', 'search/textSearch', 'search/usages', 'read/readFile', 'read/problems', 'search/changes', 'execute/testFailure', 'web/fetch', 'web/githubRepo', 'agent']
+tools: [execute/testFailure, read/problems, read/readFile, agent/runSubagent, edit/createDirectory, edit/createFile, edit/createJupyterNotebook, edit/editFiles, edit/editNotebook, edit/rename, search/changes, search/codebase, search/fileSearch, search/textSearch, search/usages, web/fetch, web/githubRepo]
 agents: ['Sci-Explore', 'Sci-Research']
 model: ['GPT-5.4 (copilot)', 'Claude Sonnet 4.6 (copilot)']
 handoffs:
