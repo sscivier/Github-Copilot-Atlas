@@ -17,7 +17,7 @@ VS Code 1.113 adds two capabilities that directly affect this suite:
 
 As of March 2026, custom subagents in VS Code appear unable to escalate above the parent session's premium model tier. In practice, a `GPT-5.4` or `Claude Sonnet 4.6` parent session can apply subagent-specific tools and instructions, but subagents that request `Claude Opus 4.6` resolve to a 1x model instead of dispatching Opus.
 
-Until that behavior changes, the reasoning-first Sci agents below standardize on `GPT-5.4` with `Claude Sonnet 4.6` fallback so direct use and delegated use stay consistent.
+Until that behavior changes, the Sci agents below standardize on `GPT-5.4` with `Claude Sonnet 4.6` fallback so direct use and delegated use stay consistent.
 
 ### Recommended Reasoning Tiers
 
@@ -25,7 +25,7 @@ Until that behavior changes, the reasoning-first Sci agents below standardize on
 | ---- | ------ | ------------------------ | --------------------------- |
 | Reasoning-first | Sci-Conductor, Sci-Plan, Sci-Research, Sci-Review, Sci-Debug, Sci-Debug-Auto | GPT-5.4 → Claude Sonnet 4.6 fallback | High for architectural planning, scientific analysis, review, and debugging |
 | Discovery-first | Sci-Explore | GPT-5.4 → Claude Sonnet 4.6 fallback | Adaptive or low unless codebase discovery must be exhaustive |
-| Execution-first | Sci-Implement, Sci-Docs, Sci-Notebook, Sci-Viz | Claude Sonnet 4.6 → GPT-5.4 fallback | Adaptive or medium; raise only for unusually complex tasks |
+| Execution-first | Sci-Implement, Sci-Docs, Sci-Notebook, Sci-Viz | GPT-5.4 → Claude Sonnet 4.6 fallback | Adaptive or medium; raise only for unusually complex tasks |
 
 ### Recommended Nested Routes
 
@@ -214,7 +214,7 @@ Explanation of what was found
 
 ### Sci-Implement (Implementation Agent)
 
-**Model**: Claude Sonnet 4.6 with GPT-5.4 fallback
+**Model**: GPT-5.4 with Claude Sonnet 4.6 fallback
 
 **Role**: Implements scientific Python code with strict TDD
 
@@ -310,7 +310,7 @@ This started after we changed the lengthscale network initialization.
 
 ### Sci-Docs (Documentation Agent)
 
-**Model**: Claude Sonnet 4.6 with GPT-5.4 fallback
+**Model**: GPT-5.4 with Claude Sonnet 4.6 fallback
 
 **Role**: Creates and maintains formal Sphinx reST documentation for public scientific Python APIs and workflows
 
@@ -343,7 +343,7 @@ use the existing docs build workflow and fix any broken references you touch.
 
 ### Sci-Notebook (Notebook Agent)
 
-**Model**: Claude Sonnet 4.6 with GPT-5.4 fallback
+**Model**: GPT-5.4 with Claude Sonnet 4.6 fallback
 
 **Role**: Creates Jupyter notebooks for exploration and documentation
 
@@ -372,7 +372,7 @@ Create a tutorial notebook demonstrating how to use our custom Gibbs kernel with
 
 ### Sci-Viz (Visualization Agent)
 
-**Model**: Claude Sonnet 4.6 with GPT-5.4 fallback
+**Model**: GPT-5.4 with Claude Sonnet 4.6 fallback
 
 **Role**: Creates scientific visualizations
 

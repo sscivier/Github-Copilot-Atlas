@@ -1,7 +1,7 @@
 ---
 description: 'Research scientific context, algorithms, libraries, and best practices for Python projects'
 argument-hint: Research goal or scientific question
-tools: ['search/codebase', 'search/fileSearch', 'search/textSearch', 'search/usages', 'read/readFile', 'read/problems', 'search/changes', 'execute/testFailure', 'web/fetch', 'agent/runSubagent']
+tools: ['search/codebase', 'search/fileSearch', 'search/textSearch', 'search/usages', 'read/readFile', 'read/problems', 'search/changes', 'execute/testFailure', 'web/fetch', 'web/githubRepo', 'agent/runSubagent']
 agents: ['Sci-Explore']
 model: ['GPT-5.4 (copilot)', 'Claude Sonnet 4.6 (copilot)']
 user-invocable: false
